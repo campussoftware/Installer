@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hostsettings>
+		<Host>
+                    <websitehost>http://localhost/framework/</websitehost>
+                    <documentroot>E:/xampp56/htdocs/framework/</documentroot>
+                    <identity>framework</identity>
+                    <admincode>admin</admincode>
+                    <rpp>17</rpp>
+                    <theme>default</theme>
+                    <projectnode></projectnode>
+		</Host>
+		<Database>
+	        <default>
+                        <Host>localhost</Host>
+                        <User>framework</User>
+                        <PWD>framework</PWD>
+		        <Name>framework</Name>
+        	</default>
+		</Database>
+</hostsettings>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<body>
+        <block name="header" class="Core_Modules_CoreUsermanagement_Block_User" template="header" />
+        <block name="content" class="Core_Modules_CoreUsermanagement_Block_User" template="content" >
+                <block template="ramesh">
+                </block>
+        </block>
+        <block name="footer" class="Core_Modules_CoreUsermanagement_Block_User" template="footer" />		
+</body>
