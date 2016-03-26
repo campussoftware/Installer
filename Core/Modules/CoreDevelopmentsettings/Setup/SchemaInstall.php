@@ -78,6 +78,8 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             // Email Settings
             "CoreEmailSettings"=>"CoreEmailSettings", 
             "CoreEmailNotifications"=>"CoreEmailNotifications",
+			"CoreEmailVerify"=>"CoreEmailVerify", 
+			
                        
             //Label Settings
             "CoreLabelDetails"=>"CoreLabelDetails",
@@ -93,6 +95,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             // SMS Settings 
             "CoreSmsSettings"=>"CoreSmsSettings",
             "CoreSmsNotifications"=>"CoreSmsNotifications",
+			"CoreSmsVerify"=>"CoreSmsVerify",
             "CoreSmsLog"=>"CoreSmsLog",
             // table for url rewrite
             "CoreUrlRewrite"=>"CoreUrlRewrite",
