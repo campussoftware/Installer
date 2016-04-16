@@ -64,7 +64,9 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
         $identifier=$cp->convertEncryptDecrypt('encrypt',$ws->websiteAdminUrl);
         if(ADMINPASS==$this->_requestedData['userpassword'] && ADMINNAME==$this->_requestedData['username'])
         {
-            session_start();
+            if(!isset($_SESSION)){
+                session_start();
+            }          
             $cp=new Core_CodeProcess();
             $identifier=$cp->convertEncryptDecrypt('encrypt',$ws->websiteAdminUrl);
             $_SESSION[$identifier]['profile_id']="ROOT";
@@ -129,4 +131,31 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
     {
         $this->loadLayout("changepassword.phtml");
     }
+	public function savepasswordAction()
+	{
+		
+		$backUrl=$this->_websiteAdminUrl;
+		$requestedData=$this->_requestedData;
+		$currentpassword=$requestedData['currentpassword'];
+		$newpassword=$requestedData['newpassword'];
+		$renewpassword=$requestedData['renewpassword'];
+		$errorsArray=array();
+		if($currentpassword=="")
+		{
+			$errorsArray['currentpassword']="Please Current Password";
+		}
+		if($newpassword=="")
+		{
+			$errorsArray['newpassword']="Please New Password";
+		}
+		if($renewpassword=="")
+		{
+			$errorsArray['renewpassword']="Please Re-New Password";
+		}
+		$output['status']="error";
+		$output['errors']=$errorsArray;
+		$output['redirecturl']=$backUrl;                 
+		echo json_encode($output);
+		exit;		
+	}
 }

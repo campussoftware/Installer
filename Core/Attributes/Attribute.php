@@ -14,6 +14,11 @@
         public $_record=array();
         public $_multiedit=0;
         public $_filePath=NULL;
+        public $_siteProperties;
+        function __construct() {
+            $this->_siteProperties=new Core_WebsiteSettings();
+        }
+        
         public function setNodeName($nodeName)
         {
             $this->_nodeName=$nodeName;

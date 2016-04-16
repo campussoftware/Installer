@@ -16,6 +16,14 @@
         public $_defaultValues=array();
         public $_requestedData=array();
         public $_filesData=array();        
+        public $_nolimit=0;
+        public $_customOrderBy=0;
+        public $_customGroupBy=0;
+        public $_orderBy=NULL;
+        public $_groupBy=NULL;
+        public $_preDefaultOrderBy=NULL;
+        public $_preDefaultGroupBy=NULL;
+        protected $_sql;
         
         public function __construct($node=null,$model=NULL) 
         {
@@ -49,6 +57,10 @@
         {
             $this->_page=$page;
         }
+        public function setNolimit()
+        {
+                $this->_nolimit=1;
+        }
         public function hideAttributes()
         {            
             $this->_currentAction;
@@ -66,7 +78,7 @@
             }
             else 
             {
-                $nodehideattributes=explode("|",$this->_currentNodeStructure['hide_edit']); 
+                $nodehideattributes=explode("|",Core::getValueFromArray($this->_currentNodeStructure, "hide_edit")); 
             }
             
             return array_merge($defaulthideAttributes,$nodehideattributes);
@@ -230,12 +242,54 @@
                 }
                 $this->_wsrpp=$ws->rpp;                
                 $this->addFilter();
-                $db->addWhere($this->_whereCon);
-                $db->addGroupBy("id");
-                $db->addOrderBy($this->_autoKey." DESC");
-                $db->setLimit(($page-1)*$this->_rpp,$this->_rpp);     
-                $db->buildSelect();
+                $db->addWhere($this->_whereCon);   
+                if($this->_groupBy!="")
+                {
+                    if($this->_customGroupBy!=1)
+                    {
+                        if($this->_preDefaultGroupBy==1)
+                        {
+                            $this->_groupBy=$this->_autoKey." , ".$this->_groupBy;
+                        }
+                        else
+                        {
+                            $this->_groupBy=$this->_groupBy." ,".$this->_autoKey;
+                        }
+                    }
+                }
+                else
+                {
+                    $this->_groupBy=$this->_autoKey;
+                }
+                $db->addGroupBy($this->_groupBy);
                 
+                if($this->_orderBy!="")
+                {
+                    if($this->_customOrderBy!=1)
+                    {
+                        if($this->_preDefaultOrderBy==1)
+                        {
+                            $this->_orderBy=$this->_autoKey." DESC , ".$this->_orderBy;
+                        }
+                        else
+                        {
+                            $this->_orderBy=$this->_orderBy." ,".$this->_autoKey." DESC ";
+                        }
+                    }
+                }
+                else
+                {
+                    $this->_orderBy=$this->_autoKey." DESC";
+                }
+                
+                $db->addOrderBy($this->_orderBy);
+                if($this->_nolimit!=1)
+                {
+                    $db->setLimit(($this->_page-1)*$this->_rpp,$this->_rpp);     
+                }
+                
+                $db->buildSelect();
+                $this->_sql=$db->sql;
                 $this->_collections=$db->getRows($indexKey); 
             }
             catch(Exception $ex)
@@ -584,6 +638,56 @@
                 $this->_whereCon.=" ".$whereCon;
             }
             
+        }
+        public function setCustomOrderBy()
+        {
+            $this->_customOrderBy=1;
+        }
+        public function setCustomGroupBy()
+        {
+            $this->_customGroupBy=1;
+        }
+        public function addCustomOrderBy($columname,$orderType=NULL)
+        {
+            if($columname!="")
+            {
+                if($orderType=="")
+                {
+                    $orderType="ASC";
+                }
+                if($this->_orderBy!="")
+                {
+                    $this->_orderBy.=",";
+                }
+                $this->_orderBy.=" ".$columname." ".$orderType;            
+            }
+        }
+        public function addCustomGroupBy($columname,$havingCondition=NULL)
+        {
+            if($columname!="")
+            {
+                if($this->_groupBy!="")
+                {
+                    $this->_groupBy.=",";
+                }
+                $this->_groupBy.=" ".$columname;
+                if($havingCondition!="")
+                {
+                    $this->_groupBy.=" HAVING ".$havingCondition;            
+                }
+            }
+        }
+        public function setPreDefaultOrderBy()
+        {
+            $this->_preDefaultOrderBy=1;
+        }
+        public function setPreDefaultGroupBy()
+        {
+            $this->_preDefaultGroupBy=1;
+        }
+        public function getSql()
+        {
+            return $this->_sql;
         }
     }
 ?>

@@ -52,7 +52,7 @@ class Core_Model_NodeSave extends Core_Model_Settings
             }
             else
             {
-                if($this->_tableFieldWithData[$this->_autoKey])
+                if(Core::getValueFromArray($this->_tableFieldWithData, $this->_autoKey))
                 {
                     $buildUpdate=1;
                     $db->addWhere($this->_autoKey."='".$this->_tableFieldWithData[$this->_autoKey]."'");
@@ -96,7 +96,7 @@ class Core_Model_NodeSave extends Core_Model_Settings
           
         if($this->_autoKey)
         {
-            if(!$this->_tableFieldWithData[$this->_autoKey])
+            if(!Core::getValueFromArray($this->_tableFieldWithData, $this->_autoKey))
             {
                 $newDb =new Core_DataBase_ProcessQuery();
                 $newDb->setTable($this->_tableName);
@@ -125,5 +125,6 @@ class Core_Model_NodeSave extends Core_Model_Settings
         
         return $this->_tableFieldWithData[$this->_pkName];
     }
+    
     //put your code here
 }

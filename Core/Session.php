@@ -48,7 +48,8 @@ class Core_Session {
         }
     }
 
-    public function getSessionMaganager() {
+    public function getSessionMaganager() 
+    {
         global $actionRequestFrom;
         $cp = new Core_CodeProcess();
         $identifier = $cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);

@@ -66,7 +66,7 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
     {
         return $this->_nodeName;            
     }
-    public function setSurrentSelector($currentSelector) 
+    public function setCurrentSelector($currentSelector) 
     {
         $this->_currentSelector=$currentSelector;           
     }
@@ -85,7 +85,7 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
     {
 
         $NodeFileProperties=$this->getNodeFileProperties();
-        $this->_currentNodeModule=$NodeFileProperties['module'];   
+        $this->_currentNodeModule=Core::getValueFromArray($NodeFileProperties,'module');   
         
     }
     public function getNodeActions()
@@ -150,7 +150,7 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
         $np= new Core_Model_NodeProperties($this->_nodeName);
         $np->setNode($this->_nodeName);
         $nodeStructure=$np->currentNodeStructure();        
-        $nodeTable=$nodeStructure['tablename'];       
+        $nodeTable=Core::getValueFromArray($nodeStructure, 'tablename');       
         $this->_tableName=$nodeTable;
         $this->getNodeFieldsProperties();
         
@@ -174,72 +174,48 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
         $np = new Core_Model_NodeProperties();
         $np->setNode($this->_nodeName);
         $this->_currentNodeStructure=$np->currentNodeStructure();
-        $this->_tableName =$this->_currentNodeStructure['tablename'];
-        $this->_primaryKey=$this->_currentNodeStructure['primkey'];
-        $this->_autoKey=$this->_currentNodeStructure['autokey'];
-        $this->_descriptor=$this->_currentNodeStructure['descriptor'];
-        $this->_isDefaultCollection=$this->_currentNodeStructure['default_collection'];
+        $this->_tableName =Core::getValueFromArray($this->_currentNodeStructure,'tablename');
+        $this->_primaryKey=Core::getValueFromArray($this->_currentNodeStructure,'primkey');
+        $this->_autoKey=Core::getValueFromArray($this->_currentNodeStructure,'autokey');
+        $this->_descriptor=Core::getValueFromArray($this->_currentNodeStructure,'descriptor');
+        $this->_isDefaultCollection=Core::getValueFromArray($this->_currentNodeStructure,'default_collection');
         
-        if(trim($this->_currentNodeStructure['uniquefields']))
-        {
-            $this->_uniqueAttributes=explode("|",  $this->_currentNodeStructure['uniquefields']);
-        }
-        if(trim($this->_currentNodeStructure['file']))
-        {
-            $this->_fileAttributes=explode("|",  $this->_currentNodeStructure['file']);
-            $this->setNodeFeildAttribute($this->_fileAttributes,"file");
-        }
-        if(trim($this->_currentNodeStructure['boolattributes']))
-        {
-            $this->_boolAttributes=explode("|",  $this->_currentNodeStructure['boolattributes']);
-            $this->setNodeFeildAttribute($this->_boolAttributes,"bool");
-        }
-        if(trim($this->_currentNodeStructure['numberattribute']))
-        {
-            $this->_numberAttributes=explode("|",  $this->_currentNodeStructure['numberattribute']);
-        }                    
-        if(trim($this->_currentNodeStructure['multivalues']))
-        {
-            $this->_multivaluesAttributes=explode("|",$this->_currentNodeStructure['multivalues']);
-        }
         
-        if(trim($this->_currentNodeStructure['selectbox']))
+        $this->_uniqueAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'uniquefields'),'|');
+        $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'boolattributes'),'|');
+        if(count($SelectAttributes)>0)
         {
-            $SelectAttributes=explode("|",$this->_currentNodeStructure['selectbox']);
-            if(count($SelectAttributes)>0)
-            {
-                $this->setNodeFeildAttribute($SelectAttributes,"select");
-            }
+            $this->setNodeFeildAttribute($SelectAttributes,"bool");
         }
-        if(trim($this->_currentNodeStructure['fck']))
+        $this->_numberAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'numberattribute'),'|');
+        $this->_multivaluesAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'multivalues'),'|');
+        
+        $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'select'),'|');
+        if(count($SelectAttributes)>0)
         {
-            $SelectAttributes=explode("|",$this->_currentNodeStructure['fck']);
-            if(count($SelectAttributes)>0)
-            {
-                $this->setNodeFeildAttribute($SelectAttributes,"fck");
-            }
+            $this->setNodeFeildAttribute($SelectAttributes,"select");
         }
-        if(trim($this->_currentNodeStructure['file']))
+        $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'fck'),'|');
+        if(count($SelectAttributes)>0)
         {
-            $SelectAttributes=explode("|",$this->_currentNodeStructure['file']);
-            if(count($SelectAttributes)>0)
-            {
-                $this->setNodeFeildAttribute($SelectAttributes,"file");
-            }
+            $this->setNodeFeildAttribute($SelectAttributes,"fck");
+        }
+        $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'file'),'|');
+        if(count($SelectAttributes)>0)
+        {
+            $this->_fileAttributes=$SelectAttributes;
+            $this->setNodeFeildAttribute($SelectAttributes,"file");
         }
         
-        if(trim($this->_currentNodeStructure['checkbox']))
+        
+        $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'checkbox'),'|');
+        if(count($SelectAttributes)>0)
         {
-            $SelectAttributes=explode("|",$this->_currentNodeStructure['checkbox']);
-            if(count($SelectAttributes)>0)
-            {
-                $this->setNodeFeildAttribute($SelectAttributes,"checkbox");
-            }
+            $this->setNodeFeildAttribute($SelectAttributes,"checkbox");
         }
-        if(trim($this->_currentNodeStructure['search']))
-        {
-            $this->_searchAttributes=explode("|",  $this->_currentNodeStructure['search']);
-        }        
+        
+        $this->_searchAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'search'),'|');
+        
         $nr=new Core_Model_NodeRelations();
         $nr->setNode($this->_nodeName);        
         $this->_nodeMTORelations=$nr->getCurrentNodeRelation();          

@@ -74,8 +74,10 @@
         if($actionRequestFrom=='frentend')
         {
             $frontController=CoreClass::getFrontController($currentNode,$currentModule,$action);
-            $frontController->setNode($currentNode);
-            $frontController->setAction($action);
+            $frontController->setNodeName($currentNode);
+            $frontController->setActionName($action);
+            $frontController->setRequestedData($requestedData);
+            $frontController->setFilesData($filesData);
             $functionName=$action."Action";
             if(method_exists($frontController,$functionName))
             {
@@ -111,22 +113,11 @@
                 $node->setParentNode($parentNode);
                 $node->setParentValue($parentValue);
                 $node->setParentAction($parentAction);
-                $node->setSurrentSelector($currentSelector);
+                $node->setCurrentSelector($currentSelector);
                 $node->setMethodType($methodType);
                 $node->setRequestedData($requestedData);
                 $node->setFilesData($filesData);
-                $node->checkSession();    
-                if($actionRequestFrom!='frentend')
-                {
-                    if($header)
-                    {            
-                        $page=new Core_Pages_HeaderPage();            
-                    }
-                    if($navigation)
-                    {
-                        $page=new Core_Pages_NavigationPage($currentNodePropertices);           
-                    }
-                }
+                $node->checkSession();                
                 $functionName=$action."Action";   
 
                 if(method_exists($node,$functionName))
@@ -154,24 +145,23 @@
             else
             {                 
                 $session=new Core_Session();
-                $session=$session->getSessionMaganager();            
-                if($header)
-                {            
-                    $page=new Core_Pages_HeaderPage();            
-                }
-                if($navigation)
+                $session=$session->getSessionMaganager(); 
+                $homeController=new Core_Controllers_AdminController();
+                $homeController->setNodeName($currentNode);
+                $homeController->setActionName($action);
+                $homeController->setRequestedData($requestedData);
+                $homeController->setFilesData($filesData);
+                $functionName=$action."Action";
+                if(method_exists($homeController,$functionName))
                 {
-                    $page=new Core_Pages_NavigationPage($currentNodePropertices);           
+                    $homeController->$functionName();
                 }
-                $page=new Core_Pages_PageLayout();   
-                $page->loadLayout('home.phtml');                
+                else
+                {
+                    $homeController->indexAction();
+                }     
 
             }
-            if($footer)
-            {
-                $page=new Core_Pages_FooterPage();
-            } 
-            
         }
     }
  catch (Exception $ex)

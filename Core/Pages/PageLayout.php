@@ -11,7 +11,7 @@ class Core_Pages_PageLayout extends Core_Model_Language
     public $_currentNodeName=NULL;
     public $_currentNodeModule;
     public $_nodeName;
-
+    
 
     public function setCurrentNodeName($nodeName)
     {

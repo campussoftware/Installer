@@ -1,29 +1,30 @@
 <?php
-$performAction = $this->checkActionPerform();
-$performMraAction = $this->checkMraActionPerform();
-$performMultiEditAction = $this->checkMultiEditActionInProgress();
-$multiEditFields = $this->getMultiEditAttributes();
-if ($this->_totalRecordsCount < 1) {
-    $this->_totalRecordsCount = 1;
+$controllerObj=$this->_controllerObj;
+$performAction = $controllerObj->checkActionPerform();
+$performMraAction = $controllerObj->checkMraActionPerform();
+$performMultiEditAction = $controllerObj->checkMultiEditActionInProgress();
+$multiEditFields = $controllerObj->getMultiEditAttributes();
+if ($controllerObj->_totalRecordsCount < 1) {
+    $controllerObj->_totalRecordsCount = 1;
 }
 ?>
-<div id="total_<?php echo $this->_nodeName; ?>" name="total_<?php echo $this->_nodeName; ?>">
+<div id="total_<?php echo $controllerObj->_nodeName; ?>" name="total_<?php echo $controllerObj->_nodeName; ?>">
 <?php
 if (!$performMultiEditAction) {
     ?>
         <div>
         <?php
         $parentPath = "";
-        if ($this->_parentNode) {
-            $parentPath.=$this->_parentNode . "/";
-            $parentPath.=$this->_parentAction . "/";
-            $parentPath.=$this->_parentSelector;
+        if ($controllerObj->_parentNode) {
+            $parentPath.=$controllerObj->_parentNode . "/";
+            $parentPath.=$controllerObj->_parentAction . "/";
+            $parentPath.=$controllerObj->_parentSelector;
         }
-        if (count($this->_singleActions) && $performAction == 1) {
-            foreach ($this->_singleActions as $actionName) {
+        if (count($controllerObj->_singleActions) && $performAction == 1) {
+            foreach ($controllerObj->_singleActions as $actionName) {
                 ?>
                     <span style="padding-left: 25px;">
-                        <a href="<?php echo $this->_websiteHostUrl . $actionName["code"] . "/0/" . $parentPath; ?>">
+                        <a href="<?php echo $controllerObj->_websiteHostUrl . $actionName["code"] . "/0/" . $parentPath; ?>">
                             <button class="btn btn-warning"><?php echo $actionName['name']; ?></button>
                         </a>
                     </span>
@@ -38,7 +39,7 @@ if (!$performMultiEditAction) {
     <div class="box box-primary">
 
         <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $this->getLabel($this->_currentAction); ?></h3>
+            <h3 class="box-title"><?php echo $controllerObj->getLabel($controllerObj->_currentAction); ?></h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse"><i class="icon-chevron-down"></i></button>
             </div>
@@ -51,25 +52,25 @@ if (!$performMultiEditAction) {
                 </div>
             </div>
             <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
-                <form id="result_<?php echo $this->_nodeName; ?>" name="result_<?php echo $this->_nodeName; ?>" >
-                    <div id="result_<?php echo $this->_nodeName; ?>_div" name="result_<?php echo $this->_nodeName; ?>_div">
+                <form id="result_<?php echo $controllerObj->_nodeName; ?>" name="result_<?php echo $controllerObj->_nodeName; ?>" >
+                    <div id="result_<?php echo $controllerObj->_nodeName; ?>_div" name="result_<?php echo $controllerObj->_nodeName; ?>_div">
 <?php
 if (!$performMultiEditAction) {
     ?>
                             <div style=" padding-left: 18px;">
                                 <span style=" padding-left: 18px;">RPP:</span>
                                 <span style=" padding-left: 18px;">
-                                    <select size="1" name="rpp" aria-controls="rpp" class="input-mini" onchange="setrpp('<?php echo $this->_nodeName; ?>', this.value);
-                                                                            samplefun('<?php echo $this->_nodeName; ?>');">
+                                    <select size="1" name="rpp" aria-controls="rpp" class="input-mini" onchange="setrpp('<?php echo $controllerObj->_nodeName; ?>', this.value);
+                                                                            samplefun('<?php echo $controllerObj->_nodeName; ?>');">
                             <?php
                             $in = "1";
-                            while ($this->_wsrpp * ($in - 1) < $this->_totalRecordsCount) {
-                                if ($this->_wsrpp * $in == $this->_rpp) {
+                            while ($controllerObj->_wsrpp * ($in - 1) < $controllerObj->_totalRecordsCount) {
+                                if ($controllerObj->_wsrpp * $in == $controllerObj->_rpp) {
                                     $sel = " selected ";
                                 } else {
                                     $sel = "";
                                 }
-                                echo $output = '<option value="' . ($this->_wsrpp * $in) . '" ' . $sel . '>' . ($this->_wsrpp * $in) . '</option>';
+                                echo $output = '<option value="' . ($controllerObj->_wsrpp * $in) . '" ' . $sel . '>' . ($controllerObj->_wsrpp * $in) . '</option>';
                                 $in++;
                             }
                             ?>
@@ -78,12 +79,12 @@ if (!$performMultiEditAction) {
                                 <span style=" padding-left: 18px;">Page:</span>
                                 <span style=" padding-left: 18px;">
 
-                                    <select size="1" name="page" aria-controls="page" class="input-mini" onchange="setpage('<?php echo $this->_nodeName; ?>', this.value);
-                                                                            samplefun('<?php echo $this->_nodeName; ?>');">
+                                    <select size="1" name="page" aria-controls="page" class="input-mini" onchange="setpage('<?php echo $controllerObj->_nodeName; ?>', this.value);
+                                                                            samplefun('<?php echo $controllerObj->_nodeName; ?>');">
                                         <?php
                                         $in = "1";
-                                        while ($this->_rpp * ($in - 1) <= $this->_totalRecordsCount) {
-                                            if ($in == $this->_page) {
+                                        while ($controllerObj->_rpp * ($in - 1) <= $controllerObj->_totalRecordsCount) {
+                                            if ($in == $controllerObj->_page) {
                                                 $sel = " selected ";
                                             } else {
                                                 $sel = "";
@@ -94,25 +95,25 @@ if (!$performMultiEditAction) {
                                         ?>
                                     </select>
                                 </span>
-                                <span style=" padding-left: 18px;">Display Records: <?php echo $this->_rpp * ($this->_page - 1); ?> to <?php echo $this->_rpp * ($this->_page) > $this->_totalRecordsCount ? $this->_totalRecordsCount : $this->_rpp * ($this->_page); ?>  of <?php echo $this->_totalRecordsCount; ?></span>
+                                <span style=" padding-left: 18px;">Display Records: <?php echo $controllerObj->_rpp * ($controllerObj->_page - 1); ?> to <?php echo $controllerObj->_rpp * ($controllerObj->_page) > $controllerObj->_totalRecordsCount ? $controllerObj->_totalRecordsCount : $controllerObj->_rpp * ($controllerObj->_page); ?>  of <?php echo $controllerObj->_totalRecordsCount; ?></span>
                                 </span>
                             </div>                    
                                         <?php
                                     }
-                                    if ($this->checkMultiEditAction()) {
+                                    if ($controllerObj->checkMultiEditAction()) {
                                         ?>
                             <div>
                                 <span>
                                         <?php
                                         if ($performMultiEditAction) {
                                             ?>
-                                        <div id="<?php echo $this->_nodeName; ?>_error_div" name="<?php echo $this->_nodeName; ?>_error_div"></div>
-                                        <input type="button" id="multieditbutton" name="multieditbutton" value="Cancel" class="btn btn-danger" onclick="updateresultdiv('cancel', '<?php echo $this->_nodeName; ?>')">
+                                        <div id="<?php echo $controllerObj->_nodeName; ?>_error_div" name="<?php echo $controllerObj->_nodeName; ?>_error_div"></div>
+                                        <input type="button" id="multieditbutton" name="multieditbutton" value="Cancel" class="btn btn-danger" onclick="updateresultdiv('cancel', '<?php echo $controllerObj->_nodeName; ?>')">
         <?php
     } else {
         ?>      
 
-                                        <input type="button" id="multieditbutton" name="multieditbutton" value="Multiedit" class="btn btn-danger" onclick="updateresultdiv('edit', '<?php echo $this->_nodeName; ?>')">
+                                        <input type="button" id="multieditbutton" name="multieditbutton" value="Multiedit" class="btn btn-danger" onclick="updateresultdiv('edit', '<?php echo $controllerObj->_nodeName; ?>')">
                                 <?php
                             }
                             ?>
@@ -136,17 +137,17 @@ if (!$performMultiEditAction) {
                                 <?php
                                 if ($performAction == 1 && $performMraAction == 1) {
                                     ?>
-                                                <input <?php echo $style; ?> type="checkbox" id="checkall" value="1" onclick="checkaction('mra_<?php echo $this->_nodeName; ?>', this.checked, 'class');"/> 
+                                                <input <?php echo $style; ?> type="checkbox" id="checkall" value="1" onclick="checkaction('mra_<?php echo $controllerObj->_nodeName; ?>', this.checked, 'class');"/> 
                             <?php
                         }
                         ?>
                                         </th>
                                         <th>Action</th>
 <?php
-if (count($this->_showAttributes) > 0) {
-    foreach ($this->_showAttributes as $FieldName) {
+if (count($controllerObj->_showAttributes) > 0) {
+    foreach ($controllerObj->_showAttributes as $FieldName) {
         ?>
-                                                <th><?php echo $this->getLabel($FieldName); ?></th>
+                                                <th><?php echo $controllerObj->getLabel($FieldName); ?></th>
                                                 <?php
                                             }
                                         }
@@ -163,44 +164,44 @@ if (count($this->_showAttributes) > 0) {
                                         <th>
                                             <input type="hidden" id="action_id" name="action_id" value="admin">
                                             <input type="button" id="buttonsearch" name="buttonsearch" value="Search" onclick="setpagezero();
-                                                                                                samplefun('<?php echo $this->_nodeName; ?>');" class="btn bsetpagezerotn-info" style="border-radius: 15px;" />	   
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_module" name="<?php echo $this->_nodeName; ?>_module" value="codebasedsettings">
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_node" name="<?php echo $this->_nodeName; ?>_node" value="<?php echo $this->_nodeName; ?>">
-                                            <input type="hidden" id="rpp_<?php echo $this->_nodeName; ?>" name="rpp_<?php echo $this->_nodeName; ?>" value="<?php echo $this->_rpp; ?>">
-                                            <input type="hidden" id="page_<?php echo $this->_nodeName; ?>" name="page_<?php echo $this->_nodeName; ?>" value="<?php echo $this->_page; ?>">			    
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentaction" name="<?php echo $this->_nodeName; ?>_parentaction" value="<?php echo $this->_parentAction; ?>">
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentnode" name="<?php echo $this->_nodeName; ?>_parentnode" value="<?php echo $this->_parentNode; ?>">
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentidvalue" name="<?php echo $this->_nodeName; ?>_parentidvalue" value="<?php echo $this->_parentSelector; ?>">
-                                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_multiedit" name="<?php echo $this->_nodeName; ?>_multiedit" value="0">
+                                                                                                samplefun('<?php echo $controllerObj->_nodeName; ?>');" class="btn bsetpagezerotn-info" style="border-radius: 15px;" />	   
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_module" name="<?php echo $controllerObj->_nodeName; ?>_module" value="codebasedsettings">
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_node" name="<?php echo $controllerObj->_nodeName; ?>_node" value="<?php echo $controllerObj->_nodeName; ?>">
+                                            <input type="hidden" id="rpp_<?php echo $controllerObj->_nodeName; ?>" name="rpp_<?php echo $controllerObj->_nodeName; ?>" value="<?php echo $controllerObj->_rpp; ?>">
+                                            <input type="hidden" id="page_<?php echo $controllerObj->_nodeName; ?>" name="page_<?php echo $controllerObj->_nodeName; ?>" value="<?php echo $controllerObj->_page; ?>">			    
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentaction" name="<?php echo $controllerObj->_nodeName; ?>_parentaction" value="<?php echo $controllerObj->_parentAction; ?>">
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentnode" name="<?php echo $controllerObj->_nodeName; ?>_parentnode" value="<?php echo $controllerObj->_parentNode; ?>">
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentidvalue" name="<?php echo $controllerObj->_nodeName; ?>_parentidvalue" value="<?php echo $controllerObj->_parentSelector; ?>">
+                                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_multiedit" name="<?php echo $controllerObj->_nodeName; ?>_multiedit" value="0">
 
                                         </th>                                                                                
                                     <?php
-                                    if (count($this->_showAttributes) > 0) {
-                                        foreach ($this->_showAttributes as $FieldName) {
+                                    if (count($controllerObj->_showAttributes) > 0) {
+                                        foreach ($controllerObj->_showAttributes as $FieldName) {
                                             ?>
 
                                                 <th>
                                             <?php
-                                            if (in_array($FieldName, $this->_searchAttributes)) {
+                                            if (in_array($FieldName, $controllerObj->_searchAttributes)) {
                                                 ?>
                                             <div id="value_<?php echo $FieldName; ?>" name="value_<?php echo $FieldName; ?>">
 
                                                 <span id="admin_<?php echo $FieldName; ?>" name="admin_<?php echo $FieldName; ?>">
                                                         <?php
-                                                        if (Core::inArray($FieldName, $this->_boolAttributes)) {
+                                                        if (Core::inArray($FieldName, $controllerObj->_boolAttributes)) {
                                                             ?>
                                                         <select class="input-small m-wrap" name="<?php echo $FieldName; ?>" id="<?php echo $FieldName; ?>">
                                                             <option value=""> ALL </option>
                 <?php
                 $sel = "";
-                if (Core::getValueFromArray($this->_requestedData,$FieldName) == 1) {
+                if (Core::getValueFromArray($controllerObj->_requestedData,$FieldName) == 1) {
                     $sel = " selected ";
                 }
                 ?>
                                                             <option <?php echo $sel; ?> value="1"> YES </option>
                                                         <?php
                                                         $sel = "";
-                                                        if (Core::getValueFromArray($this->_requestedData,$FieldName) == "0") {
+                                                        if (Core::getValueFromArray($controllerObj->_requestedData,$FieldName) == "0") {
                                                             $sel = " selected ";
                                                         }
                                                         ?>
@@ -210,7 +211,7 @@ if (count($this->_showAttributes) > 0) {
                                                         } else {
                                                             ?>
 
-                                                    <input type="text" class="input-small" name="<?php echo $FieldName; ?>" id="<?php echo $FieldName; ?>" value="<?php echo \Core::getValueFromArray($this->_requestedData,$FieldName); ?>">
+                                                    <input type="text" class="input-small" name="<?php echo $FieldName; ?>" id="<?php echo $FieldName; ?>" value="<?php echo \Core::getValueFromArray($controllerObj->_requestedData,$FieldName); ?>">
                                                         <?php
                                                     }
                                                     ?>
@@ -231,23 +232,23 @@ if (count($this->_showAttributes) > 0) {
                                 </thead>
                                 <tbody role="alert" aria-live="polite" aria-relevant="all">
                                             <?php
-                                            if (count($this->_collections) > 0) {
-                                                foreach ($this->_collections as $row) {
-                                                    if (key_exists($this->_primaryKey . "pk", $row)) {
-                                                        $primarykeyValue = $row[$this->_primaryKey . "pk"];
+                                            if (count($controllerObj->_collections) > 0) {
+                                                foreach ($controllerObj->_collections as $row) {
+                                                    if (key_exists($controllerObj->_primaryKey . "pk", $row)) {
+                                                        $primarykeyValue = $row[$controllerObj->_primaryKey . "pk"];
                                                     } else {
-                                                        $primarykeyValue = $row[$this->_primaryKey];
+                                                        $primarykeyValue = $row[$controllerObj->_primaryKey];
                                                     }
                                                     ?>
                                             <tr>
                                                 <td class="actionselection" >
                                                 <?php
                                                 if ($performMultiEditAction) {
-                                                    echo '<input type="hidden" name="' . $this->_nodeName . "_save[" . $primarykeyValue . "][" . $this->_autoKey . "]" . '" id="' . $this->_nodeName . "_" . $primarykeyValue . '_' . $this->_autoKey . '" value="' . $row[$this->_autoKey] . '"/>';
+                                                    echo '<input type="hidden" name="' . $controllerObj->_nodeName . "_save[" . $primarykeyValue . "][" . $controllerObj->_autoKey . "]" . '" id="' . $controllerObj->_nodeName . "_" . $primarykeyValue . '_' . $controllerObj->_autoKey . '" value="' . $row[$controllerObj->_autoKey] . '"/>';
                                                 } else {
                                                     if ($performAction == 1 && $performMraAction == 1) {
                                                         ?>
-                                                            <input type="checkbox" class="mra_<?php echo $this->_nodeName; ?>" id="<?php echo $this->_nodeName . "_" . $primarykeyValue; ?>" name="mra_<?php echo $this->_nodeName; ?>[]" value="<?php echo $primarykeyValue; ?>" /> 
+                                                            <input type="checkbox" class="mra_<?php echo $controllerObj->_nodeName; ?>" id="<?php echo $controllerObj->_nodeName . "_" . $primarykeyValue; ?>" name="mra_<?php echo $controllerObj->_nodeName; ?>[]" value="<?php echo $primarykeyValue; ?>" /> 
                                                 <?php
                                             }
                                         }
@@ -259,14 +260,14 @@ if (count($this->_showAttributes) > 0) {
                                             ?>
                                                         <span>
             <?php
-            if (count($this->_individualActions) > 0) {
+            if (count($controllerObj->_individualActions) > 0) {
                 ?>
 
                                                     <?php
-                                                    foreach ($this->_individualActions as $actionData) {
+                                                    foreach ($controllerObj->_individualActions as $actionData) {
                                                         if ($performAction == 1 || $actionData['code'] == 'view') {
-                                                            if ($this->recordActionPerform($actionData['code'], $primarykeyValue)) {
-                                                                $this->loadActionButton($actionData, $primarykeyValue, $parentPath);
+                                                            if ($controllerObj->recordActionPerform($actionData['code'], $primarykeyValue)) {
+                                                                $controllerObj->loadActionButton($actionData, $primarykeyValue, $parentPath);
                                                             }
                                                         }
                                                     }
@@ -279,13 +280,13 @@ if (count($this->_showAttributes) > 0) {
                                             ?>
                                                 </td>
                                                     <?php
-                                                    foreach ($this->_showAttributes as $FieldName) {
+                                                    foreach ($controllerObj->_showAttributes as $FieldName) {
                                                         ?>
                                                     <td>
                                                         <?php
-                                                        $this->loadAttribute($FieldName, $row);
+                                                        $controllerObj->loadAttribute($FieldName, $row);
                                                         ?>
-                                                        <div class="error_message" id="error_<?php echo $this->_nodeName . "_" . $primarykeyValue . "_" . $FieldName; ?>"></div>
+                                                        <div class="error_message" id="error_<?php echo $controllerObj->_nodeName . "_" . $primarykeyValue . "_" . $FieldName; ?>"></div>
 
                                                     </td>
                                                         <?php
@@ -307,32 +308,32 @@ if (count($this->_showAttributes) > 0) {
                                                 if (!$performMultiEditAction) {
                                                     if ($performMraAction == 1 && $performAction == 1) {
                                                         ?>
-                        <form id="mradata_<?php echo $this->_nodeName; ?>" name="mradata_<?php echo $this->_nodeName; ?>">
+                        <form id="mradata_<?php echo $controllerObj->_nodeName; ?>" name="mradata_<?php echo $controllerObj->_nodeName; ?>">
 
 
-                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentaction" name="<?php echo $this->_nodeName; ?>_parentaction" value="<?php echo $this->_parentAction; ?>">
-                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentnode" name="<?php echo $this->_nodeName; ?>_parentnode" value="<?php echo $this->_parentNode; ?>">
-                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_parentidvalue" name="<?php echo $this->_nodeName; ?>_parentidvalue" value="<?php echo $this->_parentSelector; ?>">
-                            <input type="hidden" id="<?php echo $this->_nodeName; ?>_selector" name="<?php echo $this->_nodeName; ?>_selector" value="">
+                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentaction" name="<?php echo $controllerObj->_nodeName; ?>_parentaction" value="<?php echo $controllerObj->_parentAction; ?>">
+                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentnode" name="<?php echo $controllerObj->_nodeName; ?>_parentnode" value="<?php echo $controllerObj->_parentNode; ?>">
+                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_parentidvalue" name="<?php echo $controllerObj->_nodeName; ?>_parentidvalue" value="<?php echo $controllerObj->_parentSelector; ?>">
+                            <input type="hidden" id="<?php echo $controllerObj->_nodeName; ?>_selector" name="<?php echo $controllerObj->_nodeName; ?>_selector" value="">
 
                             <span style="align:left">
-                                <select id="<?php echo $this->_nodeName; ?>_mraAction" name="<?php echo $this->_nodeName; ?>_mraAction" class="input-medium m-wrap" onchange="getMRATemplate('<?php echo $this->_nodeName; ?>');">
+                                <select id="<?php echo $controllerObj->_nodeName; ?>_mraAction" name="<?php echo $controllerObj->_nodeName; ?>_mraAction" class="input-medium m-wrap" onchange="getMRATemplate('<?php echo $controllerObj->_nodeName; ?>');">
                                     <option value="">Select Action</option>
                                                         <?php
-                                                        foreach ($this->_mraActions as $actionData) {
+                                                        foreach ($controllerObj->_mraActions as $actionData) {
                                                             echo '<option value="mra' . $actionData['code'] . '"> ' . $actionData['name'] . '  </option>';
                                                         }
                                                         ?>                                	
                                 </select>
                             </span>
-                            <span id="mrahtml_<?php echo $this->_nodeName; ?>" name="mrahtml_<?php echo $this->_nodeName; ?>">
+                            <span id="mrahtml_<?php echo $controllerObj->_nodeName; ?>" name="mrahtml_<?php echo $controllerObj->_nodeName; ?>">
                             </span>
-                            <span id="mraerror_<?php echo $this->_nodeName; ?>" name="mraerror_<?php echo $this->_nodeName; ?>" style="color:red;">
+                            <span id="mraerror_<?php echo $controllerObj->_nodeName; ?>" name="mraerror_<?php echo $controllerObj->_nodeName; ?>" style="color:red;">
                             </span>
 
 
                             <div>
-                                <input type="button" id="mra_submit" name="mra_submit" class="btn btn-danger" value="Go" onclick="getmraaction('<?php echo $this->_nodeName; ?>');">
+                                <input type="button" id="mra_submit" name="mra_submit" class="btn btn-danger" value="Go" onclick="getmraaction('<?php echo $controllerObj->_nodeName; ?>');">
                             </div>
                         </form>
         <?php
@@ -341,7 +342,7 @@ if (count($this->_showAttributes) > 0) {
     ?>
                     <div>
                         <span style="margin-top:15px;" >
-                            <button id=" multieditsave" name="multieditsave" class="btn btn-danger" onclick="return multieditformsubmit('<?php echo $this->_nodeName; ?>');">Save
+                            <button id=" multieditsave" name="multieditsave" class="btn btn-danger" onclick="return multieditformsubmit('<?php echo $controllerObj->_nodeName; ?>');">Save
                         </span>
                     </div>
                                         <?php

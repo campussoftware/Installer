@@ -1,5 +1,5 @@
 <?php
-class Core_Controllers_NodeController extends Core_Model_Node
+class Core_Controllers_NodeController extends Core_Pages_Render
 {
     
     public $_nodeName=NULL;
@@ -36,8 +36,7 @@ class Core_Controllers_NodeController extends Core_Model_Node
         $this->_performMraAction=1;
     }    
     public function adminAction()
-    {
-        
+    {        
         $this->gridContent();        
     }
     public function noAction()
@@ -85,13 +84,10 @@ class Core_Controllers_NodeController extends Core_Model_Node
         $this->getDefaultAttributeValues();
         $requestedData=$this->_requestedData;
         if($this->_methodType=="REQUEST")
-        {
+        {            
             $this->setCurrentNodeName($this->_nodeName);
-            $loadResponse=$this->loadLayout("addform.phtml");
-            if($loadResponse==false)
-            {
-                $loadResponse=$this->loadLayout("form.phtml");
-            }
+            $this->getAdminLayout();
+            $this->renderLayout();
         }
         else
         {
@@ -181,11 +177,8 @@ class Core_Controllers_NodeController extends Core_Model_Node
             
             $this->getRecordLoad();
             $this->setCurrentNodeName($this->_nodeName);
-            $loadResponse=$this->loadLayout("editform.phtml");
-            if($loadResponse==false)
-            {
-                $loadResponse=$this->loadLayout("form.phtml");
-            }
+            $this->getAdminLayout();
+            $this->renderLayout();
         }
         else
         { 
@@ -209,9 +202,22 @@ class Core_Controllers_NodeController extends Core_Model_Node
                     $data=array();                  
                                 
                     foreach($this->_showAttributes as $FieldName)
-                    {                
+                    {      
                         $fieldNameValue=Core::convertArrayToString($requestedData[$FieldName]);
-                        $data[$FieldName]=$fieldNameValue;                        
+                        //rameshmodified
+                        if($this->_scriptAdd)
+                        {
+                            if(Core::keyInArray($FieldName, $requestedData))
+                            {
+                                $data[$FieldName]=$fieldNameValue;   
+                            }
+                        }
+                        else
+                        {
+                            
+                            $data[$FieldName]=$fieldNameValue;   
+                        }
+                                             
                     } 
                     $data=$this->beforeDataUpdate($data);
                     $methodName=Core::convertStringToMethod($this->_nodeName."_beforeDataUpdate");
@@ -623,17 +629,19 @@ class Core_Controllers_NodeController extends Core_Model_Node
             $this->setCurrentNodeName($this->_nodeName);
             $this->actionRestriction();            
         }
-        $this->loadLayout("maingrid.phtml");
+        $this->getAdminLayout();
+        $this->renderLayout();
     }    
     public function adminRefreshAction()
-    {        
+    {       
         $this->setSingleActions();  
         $this->setIndividualActions();
         $this->setMraActions();
         $this->getCollection();
         $this->setCurrentNodeName($this->_nodeName);
         $this->actionRestriction();
-        $this->loadLayout("grid.phtml");
+        $this->getAdminLayout();
+        $this->renderLayout();
     }
 
     public function setSingleActions()
@@ -716,7 +724,7 @@ class Core_Controllers_NodeController extends Core_Model_Node
                     $db->setTable($this->_tableName); 
                     $db->addField("count(".$this->_tableName.".$this->_primaryKey)");
                     $db->addWhere($fieldName."='".$requestedData[$fieldName]."'");
-                    $db->addWhere($this->_primaryKey."!='".$nodeResult[$this->_primaryKey]."'");
+                            $db->addWhere($this->_primaryKey."!='".Core::getValueFromArray($nodeResult, $this->_primaryKey)."'");
                     
                     $db->buildSelect();       
                     
@@ -811,6 +819,7 @@ class Core_Controllers_NodeController extends Core_Model_Node
                 
                 foreach($fileattribute_list as $key)
                 {
+                    
 
                     if(Core::keyInArray($key,$filesData))
                     {
@@ -906,6 +915,16 @@ class Core_Controllers_NodeController extends Core_Model_Node
                             $data[$key]=$fileName;
                         }
                     }
+                    $imageproperties=$requestedData[$key];
+                    $tempfolder=Core::createFolder($tempfolder, "U");
+                    $thumbfile=$tempfolder."crop_".$data[$key];                
+                    
+                    $params = array(   'w' => $imageproperties['w'],
+                                            'h' => $imageproperties['h'],
+                                            'aspect_ratio' => false,
+                                            'crop' => false
+                         ,'x1'=>$imageproperties['x1'],'y1'=>$imageproperties['y1'],'x2'=>$imageproperties['x2'],'y2'=>$imageproperties['y2']);
+                    $this->cropimage($filepath, $thumbfile, $params);                    
 
                 }  
             }
@@ -993,16 +1012,18 @@ class Core_Controllers_NodeController extends Core_Model_Node
     }
     function mradeleteAction()
     {
+        
         $pidname=$this->_nodeName.'_selector';
         $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
         foreach ($primaryids as $pid) 
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"delete");              
+            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"delete");     
+            $node->setNodeName($this->_nodeName);
             $node->setActionName("delete");
             $node->setParentNode($parentNode);
             $node->setParentValue($parentValue);
             $node->setParentAction($parentAction);
-            $node->setSurrentSelector($pid);
+            $node->setCurrentSelector($pid);
             $node->setMethodType("POST"); 
             $node->setMraActionPerform();
             $node->checkSession();
@@ -1235,12 +1256,13 @@ class Core_Controllers_NodeController extends Core_Model_Node
         $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
         foreach ($primaryids as $pid) 
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"final");              
+            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"final"); 
+            $node->setNodeName($this->_nodeName);
             $node->setActionName("final");
             $node->setParentNode($parentNode);
             $node->setParentValue($parentValue);
             $node->setParentAction($parentAction);
-            $node->setSurrentSelector($pid);
+            $node->setCurrentSelector($pid);
             $node->setMethodType("POST"); 
             $node->setMraActionPerform();
             $node->checkSession();
@@ -1259,12 +1281,13 @@ class Core_Controllers_NodeController extends Core_Model_Node
         $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
         foreach ($primaryids as $pid) 
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"unfinal");              
+            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"unfinal"); 
+            $node->setNodeName($this->_nodeName);
             $node->setActionName("unfinal");
             $node->setParentNode($parentNode);
             $node->setParentValue($parentValue);
             $node->setParentAction($parentAction);
-            $node->setSurrentSelector($pid);
+            $node->setCurrentSelector($pid);
             $node->setMethodType("POST"); 
             $node->setMraActionPerform();
             $node->checkSession();
@@ -1409,9 +1432,34 @@ class Core_Controllers_NodeController extends Core_Model_Node
 	imagedestroy($idest);
      
 	return $res;
+    }    
+    public function cropimage($filename, $new_filename, $params = array())
+    {        
+        
+        $x1=$params['x1'];
+        $y1=$params['y1'];
+        $x2=$params['x2'];
+        $y2=$params['y2'];
+        $w=$params['w'];
+        $h=$params['h'];
+
+        // Get dimensions of the original image
+        list($current_width, $current_height) = getimagesize($filename);
+
+        //die(print_r($_POST));
+
+        // This will be the final size of the image 
+        $crop_width = $w;
+        $crop_height = $h;
+
+        // Create our small image
+        $new = imagecreatetruecolor($crop_width, $crop_height);
+        // Create original image
+        $current_image = imagecreatefromjpeg($filename);
+        // resamling (actual cropping)
+        imagecopyresampled($new, $current_image, 0, 0, $x1, $y1, $crop_width, $crop_height, $w, $h);
+        // creating our new image
+        imagejpeg($new, $new_filename, 95);
     }
-    
-    
-   
 }
 ?>

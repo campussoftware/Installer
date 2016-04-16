@@ -23,52 +23,52 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreEmailVerify
             $setup->setDisplayValue("Email Verify");
             $setup->addColumnName(array(
                 "name"=>"id",
-                "displayValue"=>"User Id",
+                "displayValue"=>" Id",
                 "prmiary"=>1,
                 "default"=>NULL,
-                "type"=>"int",
+                "type"=>"bigint",
                 "size"=>"11",
                 "auto_increment"=>1,           
             ));
             $setup->addColumnName(array(
                 "name"=>"type",
-                "displayValue"=>"Email Type",            
+                "displayValue"=>"type",            
                 "default"=>NULL,                
                 "type"=>"varchar",
                 "size"=>"255"          
             ));
             $setup->addColumnName(array(
-                "name"=>"typeid",
+                "name"=>"type_id",
                 "displayValue"=>"Type Id",            
-                "default"=>NULL,  
-                "type"=>"int",
-                "size"=>"11"         
+                "default"=>NULL,                
+                "type"=>"varchar",
+                "size"=>"255"          
             ));
             $setup->addColumnName(array(
                 "name"=>"expdate",
                 "displayValue"=>"Exp Date",            
-                "default"=>NULL,  
-                "type"=>"datetime"   
+                "default"=>NULL,                
+                "type"=>"date"        
             ));
             $setup->addColumnName(array(
                 "name"=>"code",
                 "displayValue"=>"Code",            
-                "default"=>NULL,  
+                "default"=>NULL,                
                 "type"=>"varchar",
-                "size"=>"255"         
+                "size"=>"255"          
             ));
-            $setup->addColumnName(array(
+			$setup->addColumnName(array(
                 "name"=>"status",
-                "displayValue"=>"Status",            
-                "default"=>NULL,  
+                "displayValue"=>"status",            
+                "default"=>NULL,                
                 "type"=>"varchar",
-                "size"=>"255"         
+                "size"=>"255"          
             ));
             $setup->addColumnName(array(
                 "name"=>"createdby",
                 "displayValue"=>"Created Id",            
                 "default"=>NULL,
-                "type"=>"int",
+                "type"=>"bigint",
                 "size"=>"11"
             ));
             $setup->addColumnName(array(
@@ -81,7 +81,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreEmailVerify
                 "name"=>"updatedby",
                 "displayValue"=>"Updated Id",            
                 "default"=>NULL,
-                "type"=>"int",
+                "type"=>"bigint",
                 "size"=>"11"
             ));
             $setup->addColumnName(array(

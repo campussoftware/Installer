@@ -3644,3 +3644,8 @@ ul > li .has-supersub >ul
     color:red;
     font-size:15px;
 }
+.thumb {
+    border: 1px solid #000000;
+    height: 75px;
+    margin: 10px 5px 0 0;
+}

@@ -609,7 +609,7 @@ function getmraaction(nodeName)
                 if(parentNode)
                 {
                     postUrl=postUrl+"/0/"+parentNode+"/"+parentAction+"/"+parentSelector;
-                }
+                }                
                 var formData =$("#mradata_"+nodeName).serialize(); 
                 $.ajax({
                             url : postUrl,
@@ -880,3 +880,104 @@ function setpageforreport(page)
 	$("#page").val(page);
 	reportdatasubmit();
 }
+$(function () {
+    var jcrop_api,
+        boundx,
+        boundy;
+    $(".fileupload").change(function () {
+        
+        var fileElementId=$(this).attr("id");
+        window.imageelement=fileElementId;
+        $("#image_preview_"+fileElementId).html("");
+        var x = document.getElementById(fileElementId);
+        var txt = "";
+        if ('files' in x) {
+            if (x.files.length == 0) {
+                txt = "Select one or more files.";
+            } 
+            else
+            {
+                $("#image_preview_"+fileElementId).show();
+                for (var i = 0, f; f = x.files[i]; i++) {
+
+                    // Only process image files.
+                    if (!f.type.match('image.*')) {
+                        continue;
+                    }
+
+                    var reader = new FileReader();
+
+                    // Closure to capture the file information.
+                    reader.onload = (function (theFile) {
+                        return function (e) {
+                            // Render thumbnail.
+                            var img = new Image;
+        
+        img.onload = function() { 
+//I loaded the image and have complete control over all attributes, like width and src, which is the purpose of filereader.
+            $.ajax({url: img.src, async: false, success: function(result){
+                     var imageInfo = theFile.name    +' '+ // get the value of `name` from the `file` Obj
+                      img.width  +'×'+ // But get the width from our `image`
+                      img.height +' '+
+                      theFile.type    +' '+
+                      Math.round(theFile.size/1024) +'KB';
+                        console.log(imageInfo);
+            		$("#image_preview_"+fileElementId).append("<div style='min-width:1500px;min-height:"+img.height+"px;overflow:auto;'><img id='ramesh' src='" + img.src + "' /></div>");
+                console.log("Finished reading Image");
+                showramesh();
+        		}});
+        };
+        
+        img.src = reader.result;
+                            console.log(e);
+                            
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<div style="overflow:auto;" ><img id="ramesh" style="width:100% !importtant;height:100% !importtant;" src="'+e.target.result+
+                                '" title="'+escape(theFile.name)+'"/><div>'].join('');
+                            
+                            //$("#image_preview_"+fileElementId).append(span);
+                            //showramesh();
+                            
+                        };
+                    })(f);
+
+                    // Read in the image file as a data URL.
+                    reader.readAsDataURL(f);
+                }               
+            }
+        }         
+        })
+    });
+    function showCoords(c)
+    {        
+        $('#'+window.imageelement+'_x1').val(c.x);
+        $('#'+window.imageelement+'_y1').val(c.y);       
+        $('#'+window.imageelement+'_x2').val(c.x2);
+        $('#'+window.imageelement+'_y2').val(c.y2);
+        $('#'+window.imageelement+'_w').val(c.w);
+        $('#'+window.imageelement+'_h').val(c.h);
+        
+    }       
+
+  function showramesh()
+  {
+    $('#ramesh').Jcrop({      
+      onSelect: showCoords
+    }); 
+
+  }
+  $(".jcropcoords").change(function(e){
+      var elementid=this.id;
+      var res = elementid.split("_");
+      res.pop();
+      setCoords(res.join("_"));
+      
+      
+  });
+  function setCoords(imageelement)
+  {
+      $('#ramesh').Jcrop({                      
+            setSelect:   [ $('#'+imageelement+'_x1').val(), $('#'+imageelement+'_y1').val(), $('#'+imageelement+'_x2').val(), $('#'+imageelement+'_y2').val() ],
+            
+        });
+  }

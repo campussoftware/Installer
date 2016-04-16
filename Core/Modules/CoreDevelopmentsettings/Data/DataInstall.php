@@ -49,8 +49,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_DataInstall
             "CoreProfileLevel"=>"CoreProfileLevel",
             "CoreUsers"=>"CoreUsers",
             "CoreCmsImageSettings"=>"CoreCmsImageSettings",
-            "CoreCmsMediatype"=>"CoreCmsMediatype",
-            "CoreEmailNotifications"=>"CoreEmailNotifications",
+            "CoreCmsMediatype"=>"CoreCmsMediatype",            
             "CoreFileTypes"=>"CoreFileTypes",
             "CoreLabelDetails"=>"CoreLabelDetails",
             "CoreNodeAttributes"=>"CoreNodeAttributes",
@@ -59,10 +58,11 @@ class Core_Modules_CoreDevelopmentsettings_Data_DataInstall
             "CoreSettingsSequence"=>"CoreSettingsSequence",
             "CoreSocialnetworkingsites"=>"CoreSocialnetworkingsites",
             "CoreEmailSettings"=>"CoreEmailSettings",
-			"CoreEmailVerify"=>"CoreEmailVerify",
-            "CoreSmsSettings"=>"CoreSmsSettings",
+            "CoreEmailNotifications"=>"CoreEmailNotifications",
+            "CoreEmailVerify"=>"CoreEmailVerify",
+            "CoreSmsSettings"=>"CoreSmsSettings",            
             "CoreSmsNotifications"=>"CoreSmsNotifications",
-			"CoreSmsVerify"=>"CoreSmsVerify",
+            "CoreSmsVerify"=>"CoreSmsVerify",            
             "CoreAppSettings"=>"CoreAppSettings",
             "CorePaymenType"=>"CorePaymenType",
             "CoreOrganization"=>"CoreOrganization",
@@ -84,6 +84,8 @@ class Core_Modules_CoreDevelopmentsettings_Data_DataInstall
             "CoreCountry"=>"CoreCountry",
             // node for url rewrite
             "CoreUrlRewrite"=>"CoreUrlRewrite",
+            "CoreWhatsappSettings"=>"CoreWhatsappSettings",
+            
             
             
         );

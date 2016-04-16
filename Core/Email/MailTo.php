@@ -11,6 +11,25 @@
  *
  * @author venkatesh
  */
-class MailTo {
+class Core_Email_MailTo 
+{
     //put your code here
+    public function sendMail()
+    {
+        try
+        {
+        // the message
+$msg = "First line of text\nSecond line of text";
+
+// use wordwrap() if lines are longer than 70 characters
+$msg = wordwrap($msg,70);
+
+// send email
+mail("rameshnaidupolarapu@gmail.com","My subject",$msg);
+        }
+                catch(Exception $e)
+                {
+                            echo $e->getMessage();
+                }
+    }
 }

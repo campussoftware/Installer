@@ -78,17 +78,20 @@ class Core {
                 break;
             default :
                 break;
-        }
-        $tempPath_list = explode("/", $folderName);
-        $i = 0;
+        }        
         $tempFolder = $wp->documentRoot;
-        while ($i < count($tempPath_list)) {
-            $tempFolder.=$tempPath_list[$i];
-            if (!file_exists($tempFolder)) {
-                mkdir($tempFolder, 0755, true);
+        if($folderName)
+        {
+            $tempPath_list = explode("/", $folderName);
+            $i = 0;
+            while ($i < count($tempPath_list)) {
+                $tempFolder.=$tempPath_list[$i];
+                if (!file_exists($tempFolder)) {
+                    mkdir($tempFolder, 0755, true);
+                }
+                $tempFolder.="/";
+                $i++;
             }
-            $tempFolder.="/";
-            $i++;
         }
         return $tempFolder;
     }
@@ -271,6 +274,21 @@ class Core {
             }
         }
         return $elements[0];  // the single top-level element
+    }
+    static function processXmlData($xmlContent,$filter=NULL)
+    {
+        $output=array();
+        if($xmlContent)
+        {
+            $xml = simplexml_load_string($xmlContent);
+            if($filter)
+            {
+                $xml = $xml->xpath($filter);
+            }	
+            $json = json_encode($xml);
+            $output = json_decode($json,TRUE);
+        }
+        return $output;
     }
 
     static function convertJsonToArray($string) {
@@ -486,9 +504,13 @@ class Core {
         }
         return $outputArray;
     }
-
+    static function getDate()
+    {
+        return date('Y-m-d');
+    }
     static function getDateTime() {
         return date('Y-m-d H:i:s');
     }
+    
 
 }

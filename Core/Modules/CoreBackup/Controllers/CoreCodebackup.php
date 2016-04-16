@@ -12,11 +12,7 @@
  * @author ramesh
  */
 class Core_Modules_CoreBackup_Controllers_CoreCodebackup extends Core_Controllers_NodeController
-{
-    public function gridContent() 
-    {
-        $this->loadLayout("codebackup.phtml");        
-    }    
+{       
     public function savedbtoseverAction() 
     {
         $requestedData=$this->_requestedData;
@@ -24,8 +20,8 @@ class Core_Modules_CoreBackup_Controllers_CoreCodebackup extends Core_Controller
         try
         {  
             
-            $folderName="uploadData";
-            $targetfilepath=Core::createFolder("UPLOAD",'B').$folderName;
+            $folderName="uploadData".strtotime(date('Y-m-d H:i:s'));
+            $targetfilepath=Core::createFolder("uploads",'B').$folderName;
             $codeProcess=new Core_CodeProcess();
             $codeProcess->createZipFile(Core::createFolder(""), $targetfilepath);            
             

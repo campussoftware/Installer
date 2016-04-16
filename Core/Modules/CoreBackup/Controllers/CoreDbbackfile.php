@@ -14,11 +14,12 @@
 class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controllers_NodeController
 {
     //put your code here
-    protected $_tableList=array();
+    protected $_tableList=array();    
     public function gridContent() 
     {
+        
         $this->getTableNames();
-        $this->loadLayout("dbbackup.phtml");        
+        parent::gridContent();       
     }
     public function getTableNames() 
     {

@@ -50,6 +50,13 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsSettings
                 "size"=>"255"
             ));
             $setup->addColumnName(array(
+                "name"=>"route",
+                "displayValue"=>"Route Id",            
+                "default"=>false,
+                "type"=>"varchar",
+                "size"=>"255"
+            ));
+            $setup->addColumnName(array(
                 "name"=>"senderid",
                 "displayValue"=>"Sender Id",            
                 "default"=>false,
@@ -91,5 +98,36 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsSettings
             ));
              $setup->create();
         }
+        $setup=new Core_DataBase_Setup();
+        $setup->setTable("core_sms_settings");
+        if($setup->tableExists($setup->getTable()))
+        {
+            $setup->addColumnName(array(
+                "name"=>"updatedat",
+                "displayValue"=>"Updated Datetime",            
+                "default"=>NULL,
+                "type"=>"datetime"
+            ));
+            $setup->addColumnName(array(
+                "name"=>"ramesh",
+                "displayValue"=>"Updated Datetime",            
+                "default"=>NULL,
+                "type"=>"datetime"
+            ));
+            $setup->alterTable();
+        }
+        $setup=new Core_DataBase_Setup();
+        $setup->setTable("core_sms_settings");
+        $setup->setFieldName("ramesh");
+        if($setup->fieldExitsinTable())
+        {
+            $setup->addColumnName(array(
+                "name"=>"ramesh",
+                "displayValue"=>"Updated Datetime",            
+                "default"=>NULL,
+                "type"=>"datetime"
+            ));
+        }
+        $setup->dropfieldTable();
     }
 }
