@@ -109,35 +109,51 @@ class Core_Install_Setup
 
                                                     if($configFileContentSettings)
                                                     {
-                                                        $dp=new Core_DataBase_ProcessQuery();
+														$dp=new Core_DataBase_ProcessQuery();
                                                         $dp->setTable("core_setupschema");
-                                                        $dp->addField("core_setupschema.id");
                                                         $dp->addWhere("core_setupschema.modulename='".$configFileContentSettings['name']."'");
                                                         $dp->buildSelect();
-                                                        $recordid=$dp->getValue();
+                                                        $existingRow=$dp->getRow();
+							$processFlag=0;
+							$recordid=$existingRow['id'];
                                                         if($recordid=="")
                                                         {
                                                             $dp=new Core_DataBase_ProcessQuery();
                                                             $dp->setTable("core_setupschema");
-                                                            $dp->addFieldArray(array("modulename"=>$configFileContentSettings['name']));                                                        
-                                                            $dp->buildInsert();
+                                                            $dp->addFieldArray(array("modulename"=>$configFileContentSettings['name']));
+															$dp->buildInsert();
                                                             $recordid=$dp->executeQuery();
+							    $processFlag=1;
                                                         }
-                                                        
-
-                                                        if(trim($configFileContentSettings['setuppath'])!="")
-                                                        {
-                                                                $setuppath=$configFileContentSettings['setuppath']."/SchemaInstall";
-                                                                $className=str_replace("/", "_", $setuppath);
-                                                                $setup=new $className();
-                                                        }
-                                                        
-                                                        if($configFileContentSettings['datapath'])
-                                                        {
-                                                                $setuppath=$configFileContentSettings['datapath']."/DataInstall";
-                                                                $className=str_replace("/", "_", $setuppath);
-                                                                $setup=new $className();
-                                                        }
+                                                        else
+							{
+							    if (version_compare($configFileContentSettings['schemaversion'], $existingRow['schemaversion']) > 0) 
+															{
+																$processFlag=1;
+															}															
+														}
+														if($processFlag==1)
+														{
+															if(trim($configFileContentSettings['setuppath'])!="")
+															{
+																	$setuppath=$configFileContentSettings['setuppath']."/SchemaInstall";
+																	$className=str_replace("/", "_", $setuppath);
+																	$setup=new $className();
+															}
+															
+															if($configFileContentSettings['datapath'])
+															{
+																	$setuppath=$configFileContentSettings['datapath']."/DataInstall";
+																	$className=str_replace("/", "_", $setuppath);
+																	$setup=new $className();
+															}
+															$dp=new Core_DataBase_ProcessQuery();
+                                                            $dp->setTable("core_setupschema");
+                                                            $dp->addFieldArray(array("schemaversion"=>$configFileContentSettings['schemaversion']));
+															$dp->addFieldArray(array("dataversion"=>$configFileContentSettings['dataversion']));															
+															$dp->buildUpdate();
+                                                            $recordid=$dp->executeQuery();
+														}
 
                                                     }
 
