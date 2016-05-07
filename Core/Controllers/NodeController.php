@@ -276,11 +276,8 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             
             $this->getRecordLoad();
             $this->setCurrentNodeName($this->_nodeName);
-            $loadResponse=$this->loadLayout("viewform.phtml");
-            if($loadResponse==false)
-            {
-                $loadResponse=$this->loadLayout("form.phtml");
-            }
+            $this->getAdminLayout();
+            $this->renderLayout();
         }        
         
     }
@@ -300,18 +297,20 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 $nodeprimkey=$nodeStructure['primkey'];
                 $db=new Core_DataBase_ProcessQuery();
                 $db->setTable($nodetablename,$node);
-                $db->addField("count(".$node.".".$nodeprimkey.")");
+                //$db->addField("count(".$node.".".$nodeprimkey.")");
                 $where=array();
                 foreach($colNameArray as $colName)
                 {
                     $where[]=$node.".".$colName." = '".$this->_currentSelector."'";
                 }
                 $db->addWhere("(".Core::convertArrayToString($where, " || ").")");
-                $db->buildSelect();
-                $count=$db->getValue();
-                if($count>0)
+                $db->buildDelete();
+                $db->executeQuery();
+               // $db->buildSelect();
+                //$count=$db->getValue();
+                //if($count>0)
                 {
-                    return  FALSE;
+                  //  return  FALSE;
                 }
             }
         }        
