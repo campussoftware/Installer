@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page>
+    <body>
+            <block name="header" class="Core_Block_Header" template="header" />   
+            <block name="navigator" class="Core_Block_Navigation" template="navigation" />  
+            <block name="addform" class="Core_Block_Block" template="form" >               
+            </block>   		
+            <block name="header" class="Core_Block_Footer" template="footer" />
+    </body>
+</page>
