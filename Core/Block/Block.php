@@ -19,8 +19,10 @@ class Core_Block_Block extends Core_Pages_PageLayout
     public $_parentBlock=NULL;
     public $_template;
     public $_controllerObj;
+    public $_websiteSettings=NULL;
     function __construct($controller) 
     {
+	$this->_websiteSettings=new Core_WebsiteSettings();
         $this->_controllerObj=$controller;
     }
     public function setLayout($layout)

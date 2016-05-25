@@ -13,10 +13,9 @@
  */
 class Core_Modules_CoreUsermanagement_Block_User extends Core_Block_Block
 {
-    //put your code here
-    
-    public function  ramesh()
-    {
-        echo "ramesh";
-    }
+	public function execute()
+	{
+		$this->loadLayout($this->_template.".phtml", 1);
+	}   
+
 }

@@ -64,8 +64,11 @@ class Core_Session {
                     Core::redirectUrl($wp->websiteAdminUrl . "core_users/logout");
                 }
             }
-        } else {
-            if ($this->_api == 1) {
+        } 
+		else 
+		{
+            if ($this->_api == 1) 
+			{
                 
             } else {
                 if ($actionRequestFrom == 'admin') {

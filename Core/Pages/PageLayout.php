@@ -17,6 +17,10 @@ class Core_Pages_PageLayout extends Core_Model_Language
     {
         $this->_currentNodeName=$nodeName;
     }
+    public function setCurrentModule($module)
+    {
+        $this->_currentNodeModule=$module;
+    }
     protected function setTheme($themeName)
     {
         $this->_themeName=$themeName;
@@ -244,10 +248,12 @@ class Core_Pages_PageLayout extends Core_Model_Language
     }
     public function loadLayout($filename,$duplicateLoad=0,$returnFile=0)
     {        
+    	$controllerObj=$this->_controllerObj;
         global $actionRequestFrom;
         $flag=0;
         $ws=new Core_WebsiteSettings();
         $templateRootPath=$ws->documentRoot."pages/";
+		
         if($actionRequestFrom=="admin")
         {
            $templateRootPath.="adminhtml/";
@@ -256,11 +262,11 @@ class Core_Pages_PageLayout extends Core_Model_Language
         {
             $templateRootPath.="frontend/";
         }
-        $currentnode=$this->_nodeName;
+        $currentnode=$this->_controllerObj->_nodeName;
         $includepath="";
         if($currentnode)
         {
-            $module=$this->_currentNodeModule;
+            $module=$this->_controllerObj->_currentNodeModule;
             if($module)
             {    
                 $module=Core::convertStringToFileName($module);

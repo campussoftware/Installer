@@ -34,7 +34,7 @@
             
             try
             {                
-                $this->output['result'] = mysqli_query($this->default,$query) or die (Core::Log(mysqli_error($this->default)));
+                $this->output['result'] = mysqli_query($this->default,$query) or die (Core::Log(mysqli_error($this->default)."::".$query));
                 $arrayResults=(array)$this->output['result'];
                 $affetedrows="";
                 $affetedfields="";
@@ -52,7 +52,7 @@
             }
             catch(Exception $ex)
             {               
-                Core::Log($ex->getMessage());
+                Core::Log($ex->getMessage().$query);
             }
         }
         function getLastInsertID()

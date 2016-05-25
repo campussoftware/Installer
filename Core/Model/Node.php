@@ -354,7 +354,11 @@
         }
         public function loadAttribute($FieldName,$record=  array())
         {              
-            
+            $isAjaxLoader=false;
+            if(isset($this->_nodeMTORelations[$FieldName]))
+            {
+                    $isAjaxLoader=true;
+            }
             $currentNodeStructure=  $this->_currentNodeStructure;
             $mandotatoryAttributes=$this->mandotatoryAttributes();			
             $readonlyAttributes=$this->readonlyAttributes();            
@@ -689,5 +693,19 @@
         {
             return $this->_sql;
         }
+	public function getRecord()
+	{
+		if(Core::countArray($this->_collections)>0)
+		{
+			foreach($this->_collections as $collection)
+			{
+				return $collection;
+			}
+		}
+		else
+		{
+			return array();
+		}
+	}
     }
 ?>
