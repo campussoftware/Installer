@@ -42,14 +42,9 @@
           
         if($methodType!='POST' && $apiMethod==1)
         {
-            echo json_encode(array("status"=>"error","message"=>"Please Pass Valid Url"));
+            echo json_encode(array("status"=>"error","message"=>"Please Provide Valid Url"));
             exit;
         }        
-        if($apiMethod)
-        {
-                Core::Log(json_encode($_REQUEST),"data.log");
-                
-        }
         
         $currentProfileCode=Core::getValueFromArray($sessionData,'profile_id');
         $header=true;
@@ -132,12 +127,6 @@
                     }
                     else 
                     {
-                        if($apiMethod)
-                        {
-                            echo json_encode(array("status"=>"error","message"=>"Please Pass Valid Url"));
-                            exit;
-                        }
-                        echo get_class($node)."::".$functionName." not Existing ";
                     }
                 }
 

@@ -1179,8 +1179,9 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             }
     }
     public function getMRATemplateAction()
-    {
-        $this->loadLayout("mratemplate.phtml");
+    {		
+        $this->getAdminLayout();
+        $this->renderLayout();
     }    
     public function finalAction()
     {

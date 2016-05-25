@@ -5,7 +5,7 @@ class Core_Model_NodeProperties
     public $_nodeName;
     public $_globalNodeStructure;
     public $_profileId=NULL;
-
+    public $_routerName=NULL;
     public function __construct($nodeName=NULL)
     {
         $this->_nodeName=$nodeName;        
@@ -75,6 +75,10 @@ class Core_Model_NodeProperties
     public function setNode($node)
     {        
         $this->_nodeName=$node;        
+    }
+    public function setRouterName($router)
+    {        
+        $this->_routerName=$router;        
     }
     public function setProfile($profile)
     {
@@ -213,6 +217,24 @@ class Core_Model_NodeProperties
         {
             return array();
         } 
-    }    
+    }   
+    public function getNodeDetailsBasedonRouter()
+    {
+	$nodeData=array();
+	$node=new Core_Model_Node();
+	$node->setNodeName("core_registernode");
+	$node->addCustomFilter("nodefile='".$this->_routerName."'");
+	$node->addCustomFilter("is_module='0'");	
+	$node->getCollection();		
+	$registerNodeData=$node->getRecord();
+	if(Core::countArray($registerNodeData)>0)
+	{
+		$nodeData['nodename']=$registerNodeData['nodename'];
+		$nodeData['module']=$registerNodeData['core_module_id'];
+		$nodeData['rootmodule']=$registerNodeData['core_root_module_id'];
+		$nodeData['moduledisplay']=$registerNodeData['core_module_display_id'];
+	}
+	return $nodeData;		
+    }  
     
 }

@@ -47,13 +47,16 @@ class Core_Model_AdminSettings
                 $list=explode("/",$this->_requestedData['reditectpath']);
                 if(Core::convertStringToLower($list['0'])=='api')
                 {
-                    $this->_isAPI=1; 
-                    $this->_currentNode=$list['1'];
-                    $this->_currentAction=$list['2'];
-                    $this->_currentSelector=$list['3'];
-                    $this->_parentNode=$list['4'];
-                    $this->_parentAction=$list['5'];
-                    $this->_parentValue=$list['6']; 
+			$this->_isAPI=1; 
+			$this->_currentNode=$list['1'];
+			$this->_currentAction=$list['2'];
+			$this->_currentSelector=$list['3'];
+			$this->_parentNode=$list['4'];
+			$this->_parentAction=$list['5'];
+			$this->_parentValue=$list['6']; 
+			$np = new Core_Model_NodeProperties();
+			$np->setNode($this->_currentNode);
+			$this->_nodeDetails=$np->getNodeDetails();
                 }                
                 if(Core::convertStringToLower($list['0'])==$wp->adminRouteCode)
                 {
@@ -104,13 +107,18 @@ class Core_Model_AdminSettings
                     if(Core::keyInArray("parentformAction", $this->_requestedData))
                     {
                         $this->_parentAction=$this->_requestedData['parentformAction'];
-                    }                    
+                    }
+		$np = new Core_Model_NodeProperties();
+		$np->setNode($this->_currentNode);
+		$this->_nodeDetails=$np->getNodeDetails();
                 }
                 else
                 {
                     $nodeModel=CoreClass::getModel("core_url_rewrite");
-                    $nodeModel->addCustomFilter("request_path='".$this->_requestedData['reditectpath']."'");
-                    $nodeModel->getCollection();
+		    $nodeModel->setNodeName("core_url_rewrite");
+                    $nodeModel->addCustomFilter("request_path='".addslashes($this->_requestedData['reditectpath'])."'");
+                    $nodeModel->getCollection();	
+					
                     if(Core::countArray($nodeModel->_collections))
                     {
                         foreach ($nodeModel->_collections as $collectionData)
@@ -124,6 +132,9 @@ class Core_Model_AdminSettings
                             $this->_parentAction=$list['4'];
                             $this->_parentValue=$list['5'];
                         }
+			$np = new Core_Model_NodeProperties();
+			$np->setNode($this->_currentNode);
+			$this->_nodeDetails=$np->getNodeDetails();
                     }
                     else
                     {
@@ -132,13 +143,24 @@ class Core_Model_AdminSettings
                         $this->_currentSelector=$list['2'];
                         $this->_parentNode=$list['3'];
                         $this->_parentAction=$list['4'];
-                        $this->_parentValue=$list['5'];                     
+                        $this->_parentValue=$list['5'];   
+			$np = new Core_Model_NodeProperties();
+			$np->setRouterName($this->_currentNode);				
+			$this->_nodeDetails=$np->getNodeDetailsBasedonRouter();						
+			if(Core::countArray($this->_nodeDetails)==0)
+			{
+				$np = new Core_Model_NodeProperties();
+				$np->setNode($this->_currentNode);
+				$this->_nodeDetails=$np->getNodeDetails();
+			} 
+			else
+			{
+				$this->_currentNode=$this->_nodeDetails['nodename'];
+			}
                     }
-                }
-                $np = new Core_Model_NodeProperties();
-                $np->setNode($this->_currentNode);
-                $this->_nodeDetails=$np->getNodeDetails();
-            }
+					  
+                }				
+			}
         }                
     }
 ?>
