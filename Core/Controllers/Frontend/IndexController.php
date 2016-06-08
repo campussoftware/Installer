@@ -6,7 +6,7 @@ class Core_Controllers_Frontend_IndexController extends Core_Pages_Render
     
     public function indexAction()
     {
-        $this->loadLayout();
+        $this->getLayout();
         $this->renderLayout();
     }
 }

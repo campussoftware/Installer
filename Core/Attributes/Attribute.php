@@ -15,6 +15,8 @@
         public $_multiedit=0;
         public $_filePath=NULL;
         public $_siteProperties;
+	public $_isAjaxLoader=0;
+		
         function __construct() {
             $this->_siteProperties=new Core_WebsiteSettings();
         }
@@ -31,6 +33,11 @@
         {
             $this->_idName=$idName;
         }
+	public function setIsAjaxLoader($flag)
+        {
+            $this->_isAjaxLoader=$flag;
+        }
+		
         public function setAction($action)
         {
             $this->_action=$action;
