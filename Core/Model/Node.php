@@ -285,7 +285,6 @@ class Core_Model_Node extends Core_Model_Abstract {
                 $displayValue = "No";
             }
         }
-<<<<<<< HEAD
 
         return $displayValue;
     }
@@ -324,36 +323,6 @@ class Core_Model_Node extends Core_Model_Abstract {
                 } else {
                     $attributeType = "Text";
                 }
-=======
-        public function loadAttribute($FieldName,$record=  array())
-        {              
-            $isAjaxLoader=false;
-            if(isset($this->_nodeMTORelations[$FieldName]))
-            {
-                    $isAjaxLoader=true;
-            }
-            $currentNodeStructure=  $this->_currentNodeStructure;
-            $mandotatoryAttributes=$this->mandotatoryAttributes();			
-            $readonlyAttributes=$this->readonlyAttributes();            
-            $onchangeEvents=array();
-            
-            
-            $sourceNodeObj=CoreClass::getModel($this->_nodeName, Core::getValueFromArray($this->_record,'action'));
-            $sourceNodeObj->setNodeName($this->_nodeName);
-            $filePath=isset($sourceNodeObj->_filePath[$FieldName]['storagefolder'])?$sourceNodeObj->_filePath[$FieldName]['storagefolder']:"";
-               
-            $eventmethod=lcfirst(str_replace(" ","",ucwords(str_replace("_", " ",$this->_nodeName)))."Onchange");
-            
-            if(Core::methodExists($sourceNodeObj, $eventmethod))
-            {
-                
-                $onchangeEvents=$sourceNodeObj->$eventmethod();
-            }     
-            $methodName=$FieldName."_loadAttribute";
-            if(Core::methodExists($sourceNodeObj,$methodName))
-            {
-                $sourceNodeObj->$methodName();
->>>>>>> origin/master
             }
             try {
                 $FieldNameOptions = array();
@@ -609,20 +578,6 @@ class Core_Model_Node extends Core_Model_Abstract {
         if (Core::inArray($fieldName, $this->_showAttributes)) {
             $this->_showAttributes[] = $fieldName;
         }
-	public function getRecord()
-	{
-		if(Core::countArray($this->_collections)>0)
-		{
-			foreach($this->_collections as $collection)
-			{
-				return $collection;
-			}
-		}
-		else
-		{
-			return array();
-		}
-	}
     }
 
 }
