@@ -89,6 +89,7 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
                 $_SESSION[$identifier]['profile_id']=$userData['core_profile_id'];
                 $_SESSION[$identifier]['name']=$userData['name'];
                 $_SESSION[$identifier]['user_id']=$userData['id'];
+                $_SESSION[$identifier]['image']=$userData['user_image'];
                 $_SESSION[$identifier]['last_activity']=time();
                 
                 $ipAddress = $_SERVER['REMOTE_ADDR'];
@@ -129,7 +130,8 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
     }
     public function changepasswordAction()
     {
-        $this->loadLayout("changepassword.phtml");
+    	$this->getAdminLayout();
+        $this->renderLayout();        
     }
 	public function savepasswordAction()
 	{
@@ -140,19 +142,50 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
 		$newpassword=$requestedData['newpassword'];
 		$renewpassword=$requestedData['renewpassword'];
 		$errorsArray=array();
+		$status="success";
 		if($currentpassword=="")
 		{
+			$status="error";
 			$errorsArray['currentpassword']="Please Current Password";
 		}
 		if($newpassword=="")
 		{
+			$status="error";
 			$errorsArray['newpassword']="Please New Password";
 		}
 		if($renewpassword=="")
 		{
+			$status="error";
 			$errorsArray['renewpassword']="Please Re-New Password";
 		}
-		$output['status']="error";
+		if($newpassword!=$renewpassword)
+		{
+			$status="error";
+			$errorsArray['renewpassword']="Password is Mismatch";
+		}
+		$sm=new Core_Session();
+		$sessionData=$sm->getSessionData();
+		$db=new Core_DataBase_ProcessQuery();
+		$db->setTable($this->_tableName);
+		$db->addField("*");
+		$db->addWhere("id='".$sessionData['user_id']."' and password='".$currentpassword."'");
+		$db->buildSelect();
+		$userData=$db->getRow();  
+		if(count($userData)==0)
+		{
+			$status="error";
+			$errorsArray['currentpassword']="Please Enter Current Valid Password";
+		}
+		if($status=='success')
+		{
+			$db=new Core_DataBase_ProcessQuery();
+			$db->setTable($this->_tableName);
+			$db->addFieldArray(array("password"=>$renewpassword));
+			$db->addWhere("id='".$sessionData['user_id']."'");
+			$db->buildUpdate();
+			$db->executeQuery();
+		}
+		$output['status']=$status;
 		$output['errors']=$errorsArray;
 		$output['redirecturl']=$backUrl;                 
 		echo json_encode($output);

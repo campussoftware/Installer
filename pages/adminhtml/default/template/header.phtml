@@ -1,5 +1,4 @@
 <?php
-
 $session=new Core_Session();
 $sessionData=$session->getSessionData();  
 $lb=new Core_Model_Language(); 
@@ -84,7 +83,6 @@ input[type="checkbox"] {
   </div>
 </div>
 <!-- BEGIN HEADER -->
-
 <header id="header" class="main-header nav navbar-fixed-top"> <a class="logo" href="<?php echo $wp->websiteAdminUrl; ?>" style=" color: rgb(10, 14, 114); font-size: 16px; "> 
   <input type="hidden" name="sitehost" id="sitehost" value="<?php echo $wp->websiteUrl; ?>" />
   <input type="hidden" name="sitehostadmin" id="sitehostadmin" value="<?php echo $wp->websiteAdminUrl; ?>" />
@@ -99,15 +97,49 @@ input[type="checkbox"] {
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"> <span class="sr-only"></span> </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-        <li class="dropdown user user-menu"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="<?php echo $wp->websiteUrl."img/avatar_small.jpg";?>" alt=""> <span class="hidden-xs"><?php echo Core::getValueFromArray($sessionData,'name'); ?></span> </a>
+        <li class="dropdown user user-menu"> 
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+                <?php if($sessionData['user_id']>0)
+                {
+                    
+                    ?>
+                    <img src="<?php echo $this->_websiteSettings->projectRootUploadUrl.$sessionData['image'];?>" alt="">
+                    <?php
+                }
+                else
+                {?>
+                    <img src="<?php echo $wp->websiteUrl."img/avatar_small.jpg";?>" alt="">
+                   <?php
+                }
+                ?>
+                <span class="hidden-xs"><?php echo Core::getValueFromArray($sessionData,'name'); ?></span> 
+            </a>
           <ul class="dropdown-menu">
             <!-- User image -->
-            <li class="user-header"> <img src="<?php echo $wp->websiteUrl."img/avatar_small.jpg";?>" alt="">
+            <li class="user-header"> 
+                <?php if($sessionData['user_id']>0)
+                {
+                    
+                    ?>
+                    <img src="<?php echo $this->_websiteSettings->projectRootUploadUrl.$sessionData['image'];?>" alt="">
+                    <?php
+                }
+                else
+                {?>
+                    <img src="<?php echo $wp->websiteUrl."img/avatar_small.jpg";?>" alt="">
+                   <?php
+                }
+                ?>
               <p> <?php echo Core::getValueFromArray($sessionData,'name'); ?> </p>
             </li>           
             <!-- Menu Footer-->
             <li class="user-footer">
+                <?php
+                if($sessionData['user_id']>0)
+                {
+                ?>
               <div class="pull-left"> <a href="<?php echo $wp->websiteAdminUrl."core_users/changepassword"; ?>" class="btn btn-default btn-flat">Change Password</a> </div>
+                <?php } ?>
               <div class="pull-right"> <a href="<?php echo $wp->websiteAdminUrl."core_users/logout"; ?>" class="btn btn-default btn-flat"><i class="icon-key"></i> Log Out</a> </div>
             </li>
           </ul>
