@@ -122,7 +122,7 @@
             {
                 $db=new Core_DataBase_DbConnect();
                 $output=$db->executeQuery($this->sql);
-                if(strtoupper($this->actionType)=="INSERT")
+                if(trim(strtoupper($this->actionType))=="INSERT")
                 {
                     return $db->getLastInsertId();
                 }

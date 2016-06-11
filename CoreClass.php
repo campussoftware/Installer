@@ -62,18 +62,25 @@ class CoreClass
         }        
         
     }
-    static function getHelper($helperNode=NULL)
+    static function getHelper($moduleName=NULL,$helperNode="Data")
     {
         $wp=new Core_WebsiteSettings();        
-        $className="Core_Helper_".$helperNode;
-        if(Core::fileExists($wp->documentRoot.str_replace("_","/",$className).".php"))
-        {
-            return new $className();
-        }
+	if($moduleName==NULL)
+	{
+		return new Core_Helper_Data();
+	}
         else
-        {           
-            return new Core_Helper_Data();
-        }        
+	{
+		$className="Modules_".$moduleName."_Helper_".$helperNode;
+		if(Core::fileExists($wp->documentRoot.str_replace("_","/",$className).".php"))
+		{
+			return new $className();
+		}
+		else
+		{           
+			return new Core_Helper_Data();
+		}  
+	}			
         
     }
     static function getMethod($object,$action,$node=NULL,$FieldName=NULL)

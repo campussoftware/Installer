@@ -85,7 +85,7 @@ class Core_Install_Setup {
 
             $cp = new Core_CodeProcess();
             $files = $cp->dirToArray("Config");
-
+			
             if (Core::countArray($files) > 0) {
                 foreach ($files as $folder => $moduleData) {
                     if (count($moduleData) > 0) {
@@ -96,13 +96,13 @@ class Core_Install_Setup {
                                         $configFile = "Config/" . $folder . "/" . $module . "/" . $file;
                                         $configFileContent = Core::getFileContent($configFile);
                                         $configFileContentSettings = Core::convertXmlToArray($configFileContent);
-
                                         if ($configFileContentSettings) {
                                             $dp = new Core_DataBase_ProcessQuery();
                                             $dp->setTable("core_setupschema");
+											$dp->addField("id");
                                             $dp->addWhere("core_setupschema.modulename='" . $configFileContentSettings['name'] . "'");
                                             $dp->buildSelect();
-                                            $existingRow = $dp->getRow();
+                                            $existingRow = $dp->getRow();											
                                             $processFlag = 0;
                                             $recordid = $existingRow['id'];
                                             if ($recordid == "") {

@@ -91,7 +91,11 @@ class Core_Pages_Render extends Core_Model_Node
                 {
                     if(Core::countArray($blockData)>0)
                     {
-                        foreach ($blockData as $blockProperties)
+		    	if(Core::keyInArray('@attributes', $blockData))
+			{
+				$blockData=array($blockData);
+			}
+			foreach ($blockData as $blockProperties)
                         {
                             if(Core::countArray($blockProperties)>0)
                             {

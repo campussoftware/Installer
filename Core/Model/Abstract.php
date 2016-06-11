@@ -30,6 +30,8 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
     public $_fileStoragePath=array();
     public $_multivaluesAttributes=array();
     public $_boolAttributes;
+    public $_joinList=array();
+    public $_customSelectFields=array();
     public function setAPI($apiMethod)
     {
         $this->_isAPI=$apiMethod;
@@ -149,7 +151,7 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
     {
         $np= new Core_Model_NodeProperties($this->_nodeName);
         $np->setNode($this->_nodeName);
-        $nodeStructure=$np->currentNodeStructure();        
+        $nodeStructure=$np->currentNodeStructure();
         $nodeTable=Core::getValueFromArray($nodeStructure, 'tablename');       
         $this->_tableName=$nodeTable;
         $this->getNodeFieldsProperties();
@@ -179,8 +181,7 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
         $this->_autoKey=Core::getValueFromArray($this->_currentNodeStructure,'autokey');
         $this->_descriptor=Core::getValueFromArray($this->_currentNodeStructure,'descriptor');
         $this->_isDefaultCollection=Core::getValueFromArray($this->_currentNodeStructure,'default_collection');
-        
-        
+        		
         $this->_uniqueAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'uniquefields'),'|');
         $SelectAttributes=Core::convertStringToArray(Core::getValueFromArray($this->_currentNodeStructure, 'boolattributes'),'|');
         if(count($SelectAttributes)>0)
@@ -278,4 +279,16 @@ class Core_Model_Abstract extends Core_Pages_PageLayout
         }
         $this->_fileStoragePath=$filePath;
     }
+	public function addFieldToShowAttribute($attribute)
+	{
+		$this->_showAttributes=array_merge($this->_showAttributes,array($attribute));
+	}
+	public function addCustomJoin($fieldName, $relationNodeTable, $fieldName, $joinCondition)
+	{
+		$this->_joinList[$fieldName]=array("colname"=>$fieldName,"nodeTable"=>$relationNodeTable,"fieldName"=>$fieldName,"con"=>$joinCondition);
+	}
+	public function addCustomFieldToSelect($key,$aliasname)
+	{
+		$this->_customSelectFields[]=array("key"=>$key,"aliasname"=>$aliasname);		
+	}
 }

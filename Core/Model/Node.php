@@ -120,6 +120,7 @@ class Core_Model_Node extends Core_Model_Abstract {
         $db->addField("*");
         $db->addWhere($this->_primaryKey . "='" . $this->_currentSelector . "'");
         $this->_record = $db->getRow();
+	$this->_sql = $db->sql;
         if (Core::countArray($this->_record) > 0) {
             foreach ($this->_record as $key => $value) {
                 if (!Core::inArray($this->_NodeFieldsList[$key], array("longtext", 'mediumtext'))) {
@@ -186,6 +187,20 @@ class Core_Model_Node extends Core_Model_Abstract {
                     }
                 }
             }
+			if(Core::countArray($this->_customSelectFields)>0)
+			{
+				foreach($this->_customSelectFields as $fieldData)
+				{
+					$db->addFieldArray(array($fieldData['key'] => $fieldData['aliasname']));
+				}
+			}
+			if(Core::countArray($this->_joinList)>0)
+			{
+				foreach($this->_joinList as $joinData)
+				{
+					$db->addJoin($joinData['colname'], $joinData['nodeTable'], $joinData['fieldName'], $joinData['con']);
+				}
+			}
             $ws = new Core_WebsiteSettings();
             if ($this->_isReport == 0) {
                 $rpp = $ws->rpp;
@@ -563,6 +578,7 @@ class Core_Model_Node extends Core_Model_Abstract {
     public function getRecord() {
         if (Core::countArray($this->_collections) > 0) {
             foreach ($this->_collections as $collection) {
+		$this->_record=$collection;
                 return $collection;
             }
         } else {
@@ -578,7 +594,7 @@ class Core_Model_Node extends Core_Model_Abstract {
         if (Core::inArray($fieldName, $this->_showAttributes)) {
             $this->_showAttributes[] = $fieldName;
         }
-    }
+    }	
 
 }
 ?>
