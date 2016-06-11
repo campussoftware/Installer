@@ -3649,3 +3649,7 @@ ul > li .has-supersub >ul
     height: 75px;
     margin: 10px 5px 0 0;
 }
+.nav>li>a>img {
+    max-width: 35px;
+    height: 35px;
+}

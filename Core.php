@@ -6,6 +6,8 @@ class Core {
         $modeContent = Core::getFileContent("mode.flag");
         if ($modeContent == 'install') {
             $new = new Core_Install_Setup();
+	    $ch = new Core_Cache_Refresh();
+            $ch->refreshCache();
         }
         return true;
     }
@@ -192,6 +194,14 @@ class Core {
     static function convertStringToLower($string) {
         if ($string) {
             return strtolower($string);
+        }
+        return $string;
+    }
+    static function convertStringToUrlSlug($string) {
+        if ($string) {
+			$string = str_replace(' ', '&', $string); 
+			$string= strtolower(preg_replace('/[^A-Za-z0-9\-]/', '-', $string));
+			$string = trim(preg_replace('/-+/', '-', $string), '-');
         }
         return $string;
     }

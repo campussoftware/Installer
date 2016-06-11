@@ -163,7 +163,13 @@ class Core_DataBase_Setup
 
                 $this->_sql.=" COMMENT '".$columnData['displayValue']."'";  
 
-                
+                if(isset($columnData['after']))
+                {
+                    if(Core::keyInArray($columnData['after'], $tableDescription))
+                    {
+                        $this->_sql.=" AFTER ".$columnData['after'];
+                    }
+                }
                 if($count>$k)
                 {
                     $this->_sql.=" ,";

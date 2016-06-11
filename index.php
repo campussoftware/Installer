@@ -65,12 +65,13 @@
             {
                 $action="admin";
             }
-        }    
-        if($actionRequestFrom=='frentend')
+        }
+        if($actionRequestFrom=='frontend')
         {
             $frontController=CoreClass::getFrontController($currentNode,$currentModule,$action);
             $frontController->setNodeName($currentNode);
             $frontController->setActionName($action);
+	    $frontController->setCurrentSelector($currentSelector);
             $frontController->setRequestedData($requestedData);
             $frontController->setFilesData($filesData);
             $functionName=$action."Action";

@@ -22,7 +22,7 @@ class Core_Model_AdminSettings
         public $_isAPI=NULL;
         public $_childNode=NULL;
         public $_nodeDetails=array();
-        public $_actionSource='frentend';
+        public $_actionSource='frontend';
         public function __construct($requesteddata,$filesData) 
         {
             if($_POST)

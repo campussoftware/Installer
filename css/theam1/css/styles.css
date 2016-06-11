@@ -29,3 +29,7 @@ form {
   height: 170px;
   overflow: hidden;
 }
+.nav>li>a>img {
+    max-width: 35px;
+    height: 35px;
+}

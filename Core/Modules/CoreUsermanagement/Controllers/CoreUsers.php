@@ -89,6 +89,7 @@ class Core_Modules_CoreUsermanagement_Controllers_CoreUsers extends Core_Control
                 $_SESSION[$identifier]['profile_id']=$userData['core_profile_id'];
                 $_SESSION[$identifier]['name']=$userData['name'];
                 $_SESSION[$identifier]['user_id']=$userData['id'];
+                $_SESSION[$identifier]['image']=$userData['user_image'];
                 $_SESSION[$identifier]['last_activity']=time();
                 
                 $ipAddress = $_SERVER['REMOTE_ADDR'];
