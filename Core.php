@@ -197,6 +197,12 @@ class Core {
         }
         return $string;
     }
+    static function convertStringToUpper($string) {
+        if ($string) {
+            return strtoupper($string);
+        }
+        return $string;
+    }
     static function convertStringToUrlSlug($string) {
         if ($string) {
 			$string = str_replace(' ', '&', $string); 
@@ -465,7 +471,12 @@ class Core {
         }
         return $content;
     }
-
+	static function getEmailTemplate($templatePath)
+	{
+		$wp = new Core_WebsiteSettings();
+		$filename = $wp->documentRoot . "templates/email/" .$templatePath;
+		return Core::getFileContent($filename);
+	}
     static function JsontoArray($content) {
         $output = array();
         if ($content) {

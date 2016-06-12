@@ -37,6 +37,14 @@ class Core_Model_Node extends Core_Model_Abstract {
     public function setFilesData($filesdata) {
         $this->_filesData = $filesdata;
     }
+    
+    public function getRequestedData() {
+        return $this->_requestedData;
+    }
+
+    public function getFilesData() {
+        return $this->_filesData;
+    }
 
     public function setChildNode($childNode) {
         $this->_childNode = $childNode;
