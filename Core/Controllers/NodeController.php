@@ -141,7 +141,20 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             echo json_encode($output);
                             exit;
                         }
-                    }                    
+                    }     
+		    $method=Core::convertStringToMethod($this->_nodeName."_commitDataUpdate"); 	
+		    if(Core::methodExists($this, $method))
+                    {                       
+                        $errorsArray=$this->$method();
+                        if(Core::isArray($errorsArray))
+                        {
+                            $output['status']="error";
+                            $output['errors']=$errorsArray;
+                            $output['redirecturl']=$backUrl;                 
+                            echo json_encode($output);
+                            exit;
+                        }
+                    } 
                     $output=array();
                     $output['status']="success";
                     $output['primaryId']=$this->_requestedData[$this->_primaryKey];
@@ -250,7 +263,20 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             echo json_encode($output);
                             exit;
                         }
-                    }                        
+                    }          
+		    $method=Core::convertStringToMethod($this->_nodeName."_commitDataUpdate"); 	
+		    if(Core::methodExists($this, $method))
+                    {                       
+                        $errorsArray=$this->$method();
+                        if(Core::isArray($errorsArray))
+                        {
+                            $output['status']="error";
+                            $output['errors']=$errorsArray;
+                            $output['redirecturl']=$backUrl;                 
+                            echo json_encode($output);
+                            exit;
+                        }
+                    }
                     $output=array();
                     $output['status']="success";
                     $output['primaryId']=$this->_requestedData[$this->_primaryKey];
@@ -592,6 +618,10 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                     if(Core::keyInArray($FieldName, $onchangeEvents))
                     {
                         $attribute->setOnchange($onchangeEvents[$FieldName]);
+                    }
+		    if(in_array($FieldName, $multiSelectedValues))
+                    {
+                        $attribute->setMultiValues(1);
                     }
                     $attribute->setAction($this->_requestedData['action']);
                     if(in_array($FieldName,$mandotatoryAttributes))

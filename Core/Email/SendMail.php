@@ -20,12 +20,18 @@ class Core_Email_SendMail extends Core_Email_Mailer
             foreach ($emailSettings->_collections as $collection)
             {
                 $this->_emailSettings=$collection;
+		break;
             }
         }        
     }
     public function setToMail($toMail)
     {
-        $this->_toMails=$toMail;
+        
+	if($this->_toMails)
+	{
+		$this->_toMails.=",";
+	}
+	$this->_toMails.=$toMail;
     }
     public function setCcMail($ccMail)
     {

@@ -13,6 +13,7 @@
         public $_action=NULL;
         public $_record=array();
         public $_multiedit=0;
+	public $_multiValues=0;
         public $_filePath=NULL;
         public $_siteProperties;
 	public $_isAjaxLoader=0;
@@ -80,7 +81,10 @@
         {
             $this->_multiedit=1;
         }
-        
+        function setMultiValues()
+        {
+            $this->_multiValues=1;
+        }
         public function setOptions($result)
         {
             $this->_options=$result;
