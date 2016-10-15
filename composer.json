@@ -1,3 +1,11 @@
 {
-    "license": "(LGPL-2.1 or GPL-3.0+)"
+    "license": "(LGPL-2.1 or GPL-3.0+)",
+    "authors": [
+        {
+            "name": "Ramesh Naidu P",
+            "email": "rameshnaidupolarapu@gmail.com",
+            "homepage": "",
+            "role": "Developer"
+        }
+    ]
 }
