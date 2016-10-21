@@ -3,7 +3,11 @@
     "license": "(LGPL-2.1 or GPL-3.0+)",    
    "minimum-stability": "beta",
     "type": "php-framework",
-    
+    "autoload": {
+        "psr-0" : {
+            "*" : "*"
+        }
+    }
     "authors": [
         {
             "name": "Ramesh Naidu P",
