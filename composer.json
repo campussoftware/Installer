@@ -1,7 +1,6 @@
 {
   "name": "ramesh/framework-php-mvc",
-  "description": "PHP Framework",
-  
+  "description": "PHPFramework",  
   "authors": [
         {
             "name": "Ramesh Naidu P",
@@ -10,7 +9,7 @@
             "role": "Developer"
         }
     ],
-  "type": "php framework",
+  "type": "phpframework",
   "version": "1.3.5",
   "autoload": {
     "files": [ "Boostrap.php" ],
