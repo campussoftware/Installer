@@ -7,7 +7,7 @@
         "psr-0" : {
             "*" : "*"
         }
-    }
+    },
     "authors": [
         {
             "name": "Ramesh Naidu P",
