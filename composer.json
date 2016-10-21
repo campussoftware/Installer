@@ -1,9 +1,6 @@
 {
     "name":"ramesh/framework-php-mvc",
-    "license": "(LGPL-2.1 or GPL-3.0+)",
-    "require" : {
-        "php" : "^5.5 || ^5.6 || ^7.0",        
-    },
+    "license": "(LGPL-2.1 or GPL-3.0+)",    
     "version":"1.0.0",
     "authors": [
         {
