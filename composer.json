@@ -2,7 +2,7 @@
     "name":"ramesh/framework-php-mvc",  
     "autoload": {
         "psr-0" : {
-            "*" : "*"
+            "Ramesh\\Framework" : "*"
         }
     },
     "authors": [
