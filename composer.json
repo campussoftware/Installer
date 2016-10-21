@@ -1,8 +1,5 @@
 {
-    "name":"ramesh/framework-php-mvc",
-    "license": "(LGPL-2.1 or GPL-3.0+)",    
-   "minimum-stability": "beta",
-    "type": "php-framework",
+    "name":"ramesh/framework-php-mvc",  
     "autoload": {
         "psr-0" : {
             "*" : "*"
