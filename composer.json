@@ -2,6 +2,11 @@
     "name":"ramesh/framework-php-mvc",
     "license": "(LGPL-2.1 or GPL-3.0+)",    
     "version":"1.0.0",
+    "autoload": {
+        "psr-0" : {
+            "ramesh/framework-php-mvc" : "Boostrap.php"
+        }
+    },
     "authors": [
         {
             "name": "Ramesh Naidu P",
